@@ -1,3 +1,4 @@
+{{-- filepath: d:\Code\KI-Poltek\KI-Poltek\resources\views\search_result.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Search Results')
@@ -39,6 +40,21 @@
 
             <!-- Search Results (Wider Center) -->
             <div class="col-span-8 bg-white shadow-md rounded-none p-3">
+                <!-- Search Bar -->
+                <form action="{{ route('search') }}" method="GET" class="mb-5">
+                    <div class="flex items-center space-x-2">
+                        <input 
+                            type="text" 
+                            name="query" 
+                            value="{{ request('query') }}" 
+                            placeholder="Search again..." 
+                            class="input input-bordered w-full"
+                            required>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+
+                <!-- Search Results -->
                 <h1 class="text-xl font-bold text-gray-500 mb-3">Search Results for: "{{ $query }}"</h1>
 
                 @if($results->isEmpty())
@@ -46,7 +62,7 @@
                 @else
                     <ul class="mt-3 space-y-2">
                         @foreach($results as $result)
-                            <li class="p-2 border-b">
+                            <li class="p-2 border-b text-gray-600">
                                 <strong>{{ $result->title }}</strong> - {{ $result->category }}
                             </li>
                         @endforeach
