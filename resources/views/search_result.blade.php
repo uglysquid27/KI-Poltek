@@ -1,35 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Results</title>
-    @vite('resources/css/app.css')
-</head>
-<body>
-    <!-- Navbar -->
-    <div class="navbar bg-base-100 shadow-sm">
-        <div class="flex-1">
-            <a class="btn btn-ghost text-xl">daisyUI</a>
-        </div>
-        <div class="flex-none">
-            <a href="{{ url('/') }}" class="btn btn-secondary">Back to Search</a>
-        </div>
-    </div>
+@extends('layouts.app')
 
-    <!-- Search Results -->
-    <div class="container mx-auto mt-10 p-5">
-        <h1 class="text-2xl font-bold">Search Results for: "{{ $query }}"</h1>
-        
-        @if($results->isEmpty())
-            <p class="text-red-500 mt-4">No results found.</p>
-        @else
-            <ul class="mt-4">
-                @foreach($results as $result)
-                    <li class="p-2 border-b">{{ $result->title }} - {{ $result->category }}</li>
-                @endforeach
-            </ul>
-        @endif
+@section('title', 'Search Results')
+
+@section('content')
+    <div class="h-screen w-full flex flex-col">
+        <div class="grid grid-cols-12 h-full">
+            <!-- Filter Options (Left - Smaller) -->
+            <div class="col-span-2 bg-white shadow-md rounded-none p-3">
+                <h2 class="text-lg font-bold text-gray-700 mb-3">Filter Options</h2>
+                <form action="{{ route('search') }}" method="GET" class="space-y-3">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Options</h3>
+                        <div class="grid grid-cols-1 gap-1">
+                            <div class="flex items-center space-x-1 bg-gray-100 px-2 py-1 rounded">
+                                <input type="checkbox" name="option1" id="option1" class="checkbox checkbox-primary scale-90">
+                                <label for="option1" class="text-sm text-gray-600">Option 1</label>
+                            </div>
+                            <div class="flex items-center space-x-1 bg-gray-100 px-2 py-1 rounded">
+                                <input type="checkbox" name="option2" id="option2" class="checkbox checkbox-primary scale-90">
+                                <label for="option2" class="text-sm text-gray-600">Option 2</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+                        <select name="category" id="category" class="select select-bordered w-full">
+                            <option value="">All Categories</option>
+                            <option value="patent">Patent</option>
+                            <option value="copyright">Copyright</option>
+                            <option value="trademark">Trademark</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-full">Apply Filters</button>
+                </form>
+            </div>
+
+            <!-- Search Results (Wider Center) -->
+            <div class="col-span-8 bg-white shadow-md rounded-none p-3">
+                <h1 class="text-xl font-bold text-gray-500 mb-3">Search Results for: "{{ $query }}"</h1>
+
+                @if($results->isEmpty())
+                    <p class="text-red-500 mt-3">No results found.</p>
+                @else
+                    <ul class="mt-3 space-y-2">
+                        @foreach($results as $result)
+                            <li class="p-2 border-b">
+                                <strong>{{ $result->title }}</strong> - {{ $result->category }}
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+
+                <div class="mt-5">
+                    <a href="{{ url('/') }}" class="btn btn-secondary w-full">Back to Search</a>
+                </div>
+            </div>
+
+            <!-- Related Results (Right - Smaller) -->
+            <div class="col-span-2 bg-white shadow-md rounded-none p-3">
+                <h2 class="text-lg font-bold text-gray-700 mb-3">Related Results</h2>
+                <ul class="space-y-2">
+                    {{-- @foreach($relatedResults as $related)
+                    <li class="p-2 border-b">
+                        <a href="{{ route('details', $related->id) }}" class="text-blue-500 hover:underline">
+                            {{ $related->title }}
+                        </a>
+                    </li>
+                    @endforeach --}}
+                </ul>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+@endsection
