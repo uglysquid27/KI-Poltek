@@ -22,7 +22,7 @@ class SearchController extends Controller
             })
             ->get();
 
-        // Menampilkan hasil di halaman search_result.blade.php
+        // Redirect ke halaman 'search_result' dengan data hasil pencarian
         return view('search_result', compact('query', 'results'));
     }
 }

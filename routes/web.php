@@ -1,10 +1,15 @@
 <?php
 
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('search'); 
 });
+
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+
 
 use App\Http\Controllers\Auth\LoginController;
 
@@ -16,6 +21,5 @@ Route::get('/dashboard', function () {
     return 'Welcome to the dashboard!';
 })->middleware('auth');
 
-use App\Http\Controllers\SearchController;
 
-Route::get('/search', [SearchController::class, 'search'])->name('search');
+
