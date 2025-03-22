@@ -25,4 +25,10 @@ class SearchController extends Controller
         // Redirect ke halaman 'search_result' dengan data hasil pencarian
         return view('search_result', compact('query', 'results'));
     }
+    
+    public function advancedSearch(Request $request)
+    {
+        // Implementasikan logika pencarian lanjutan di sini
+        return view('search.results'); // Gantilah dengan view hasil pencarian yang sesuai
+    }
 }
