@@ -6,17 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Default Title')</title>
     @vite('resources/css/app.css')
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body class="bg-[#f0f0f0] min-h-screen flex flex-col">
-    <!-- Navbar -->
     @include('layouts.navbar')
-
-    <!-- Main Content -->
     <div class="flex-grow">
         @yield('content')
     </div>
-
-    <!-- Footer -->
     @include('layouts.footer')
 </body>
 </html>
