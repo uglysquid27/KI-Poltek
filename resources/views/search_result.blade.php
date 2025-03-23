@@ -40,30 +40,19 @@
         <div class="col-span-8 p-3">
             <!-- Search Bar -->
             <form action="{{ route('search') }}" method="GET" class="mb-5 input-bordered border border-gray-300 p-2 rounded-full">
-    <div class="flex items-center space-x-2">
-        <input 
-            type="text" 
-            name="query" 
-            value="{{ request('query') }}" 
-            placeholder="Search again..." 
-            class="w-full bg-transparent rounded-lg px-4 py-2 text-gray-500" 
-            required
-        >
-        <button 
-            type="submit" 
-            class="w-10 h-10 flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white rounded-full transition"
-        >
-            <svg fill="#f0f0f0" height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490.4 490.4" xml:space="preserve">
-                <g>
-                    <path d="M484.1,454.796l-110.5-110.6c29.8-36.3,47.6-82.8,47.6-133.4c0-116.3-94.3-210.6-210.6-210.6S0,94.496,0,210.796
+                <div class="flex items-center space-x-2">
+                    <input type="text" name="query" value="{{ request('query') }}" placeholder="Search again..." class="w-full bg-transparent rounded-lg px-4 py-2 text-gray-500" required>
+                    <button type="submit" class="w-10 h-10 flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white rounded-full transition">
+                        <svg fill="#f0f0f0" height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490.4 490.4" xml:space="preserve">
+                            <g>
+                                <path d="M484.1,454.796l-110.5-110.6c29.8-36.3,47.6-82.8,47.6-133.4c0-116.3-94.3-210.6-210.6-210.6S0,94.496,0,210.796
                     s94.3,210.6,210.6,210.6c50.8,0,97.4-18,133.8-48l110.5,110.5c12.9,11.8,25,4.2,29.2,0C492.5,475.596,492.5,463.096,484.1,454.796z
                     M41.1,210.796c0-93.6,75.9-169.5,169.5-169.5s169.6,75.9,169.6,169.5s-75.9,169.5-169.5,169.5S41.1,304.396,41.1,210.796z" />
-                </g>
-            </svg>
-        </button>
-    </div>
-</form>
-
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+            </form>
 
             <!-- Search Results -->
             <h1 class="text-xl font-bold text-gray-500 mb-3">Search Results for: "{{ request('query') }}"</h1>
@@ -71,22 +60,36 @@
             @if($results->isEmpty())
             <p class="text-red-500 mt-3">No results found.</p>
             @else
-            <ul class="mt-3 space-y-2">
-                @foreach($results as $result)
-                <li class="p-2 border-b text-gray-600">
-                    <strong>{{ $result->title }}</strong> - {{ $result->category }}
-                </li>
-                @endforeach
-            </ul>
-            <!-- Pagination Links -->
+            <!-- Table for search results -->
+            <div class="overflow-x-auto text-gray-500">
+                <table class="min-w-full bg-white border border-gray-300 shadow-md rounded-lg">
+                    <thead class="bg-gray-100">
+                        <tr class="text-left">
+                            <th class="px-4 py-2 border">Nama</th>
+                            <th class="px-4 py-2 border">Nomor Registrasi</th>
+                            <th class="px-4 py-2 border">Status</th>
+                            <th class="px-4 py-2 border">Pemilik</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($results as $result)
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="px-4 py-2 border">{{ $result->title }}</td>
+                            <td class="px-4 py-2 border">{{ $result->registration_number }}</td>
+                            <td class="px-4 py-2 border">{{ $result->status }}</td>
+                            <td class="px-4 py-2 border">{{ $result->owner }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
             <div class="mt-5">
                 {{ $results->links() }}
             </div>
             @endif
 
-            <div class="mt-5">
-                <a href="{{ url('/') }}" class="btn btn-secondary w-full">Back to Search</a>
-            </div>
         </div>
 
         <!-- Related Results (Right - Smaller) -->
