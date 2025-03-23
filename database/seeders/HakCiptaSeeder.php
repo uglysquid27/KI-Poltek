@@ -5,19 +5,22 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\HakCipta;
 use App\Models\KekayaanIntelektual;
+use Faker\Factory as Faker;
 
 class HakCiptaSeeder extends Seeder
 {
     public function run()
     {
-        // Ambil ID dari Kekayaan Intelektual yang memiliki type 'hak_cipta'
-        $kekayaanIntelektual = KekayaanIntelektual::where('type', 'hak_cipta')->first();
+        $faker = Faker::create();
 
-        if ($kekayaanIntelektual) {
+        // Get all Kekayaan Intelektual entries with type 'hak_cipta'
+        $kekayaanIntelektuals = KekayaanIntelektual::where('type', 'hak_cipta')->get();
+
+        foreach ($kekayaanIntelektuals as $ki) {
             HakCipta::create([
-                'ki_id' => $kekayaanIntelektual->ki_id,
-                'hak_cipta_number' => 'HC-2024-001',
-                'type' => 'Software',
+                'ki_id' => $ki->ki_id,
+                'hak_cipta_number' => 'HC-' . $faker->unique()->numberBetween(100000, 999999),
+                'type' => $faker->randomElement(['Software', 'Literature', 'Art']),
             ]);
         }
     }

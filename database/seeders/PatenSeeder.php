@@ -5,19 +5,22 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Paten;
 use App\Models\KekayaanIntelektual;
+use Faker\Factory as Faker;
 
 class PatenSeeder extends Seeder
 {
     public function run()
     {
-        // Ambil ID dari Kekayaan Intelektual yang memiliki type 'paten'
-        $kekayaanIntelektual = KekayaanIntelektual::where('type', 'paten')->first();
+        $faker = Faker::create();
 
-        if ($kekayaanIntelektual) {
+        // Get all Kekayaan Intelektual entries with type 'paten'
+        $kekayaanIntelektuals = KekayaanIntelektual::where('type', 'paten')->get();
+
+        foreach ($kekayaanIntelektuals as $ki) {
             Paten::create([
-                'ki_id' => $kekayaanIntelektual->ki_id,
-                'paten_number' => 'PT-2024-002',
-                'validity' => '2034-02-15',
+                'ki_id' => $ki->ki_id,
+                'paten_number' => 'PT-' . $faker->unique()->numberBetween(100000, 999999),
+                'validity' => $faker->dateTimeBetween('now', '+10 years'),
             ]);
         }
     }

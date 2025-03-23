@@ -13,7 +13,15 @@ return new class extends Migration {
             $table->string('title');
             $table->text('description');
             $table->string('category');
-            $table->enum('status', ['pending', 'approved', 'rejected']);
+            $table->enum('status', [
+                'Dalam Proses', 
+                'Dibatalkan', 
+                'Ditolak', 
+                'Dihapus', 
+                'Didaftar', 
+                'Ditarik kembali', 
+                'Berakhir'
+            ]);
             $table->date('submission_date');
             $table->date('publication_date')->nullable();
             $table->string('document')->nullable();

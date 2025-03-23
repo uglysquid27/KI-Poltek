@@ -4,10 +4,10 @@
 @section('title', 'Search Results')
 
 @section('content')
-    <div class="h-screen w-full flex flex-col">
+    <div class="h-screen w-full flex flex-col pt-28"> <!-- Added pt-16 -->
         <div class="grid grid-cols-12 h-full">
             <!-- Filter Options (Left - Smaller) -->
-            <div class="col-span-2 bg-white shadow-md rounded-none p-3">
+            <div class="col-span-2  p-3">
                 <h2 class="text-lg font-bold text-gray-700 mb-3">Filter Options</h2>
                 <form action="{{ route('search') }}" method="GET" class="space-y-3">
                     <div>
