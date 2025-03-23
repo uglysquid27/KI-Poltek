@@ -11,7 +11,7 @@ class SearchController extends Controller
     {
         $query = $request->input('query');
 
-        // Mencari di tabel Kekayaan Intelektual berdasarkan judul, kategori, atau nomor hak cipta/paten
+        // Search query with pagination (10 results per page)
         $results = KekayaanIntelektual::where('title', 'like', "%{$query}%")
             ->orWhere('category', 'like', "%{$query}%")
             ->orWhereHas('hakCipta', function ($q) use ($query) {
@@ -20,9 +20,8 @@ class SearchController extends Controller
             ->orWhereHas('paten', function ($q) use ($query) {
                 $q->where('paten_number', 'like', "%{$query}%");
             })
-            ->get();
+            ->paginate(10); // Pagination applied
 
-        // Redirect ke halaman 'search_result' dengan data hasil pencarian
         return view('search_result', compact('query', 'results'));
     }
     

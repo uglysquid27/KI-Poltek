@@ -1,4 +1,3 @@
-{{-- filepath: d:\Code\KI-Poltek\KI-Poltek\resources\views\search_result.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Search Results')
@@ -10,10 +9,9 @@
             <div class="col-span-2 p-3">
                 <h2 class="text-lg font-bold text-gray-700 mb-3">Filter Options</h2>
                 <form action="{{ route('search') }}" method="GET" class="space-y-3">
-                    {{-- filepath: d:\Code\KI-Poltek\KI-Poltek\resources\views\search_result.blade.php --}}
                     <div>
                         <h3 class="text-sm font-medium text-gray-700 mb-2">Status</h3>
-                        <div class="grid grid-cols-2 gap-2"> <!-- Changed grid-cols-1 to grid-cols-2 -->
+                        <div class="grid grid-cols-2 gap-2">
                             @foreach(App\Models\KekayaanIntelektual::select('status')->distinct()->get() as $status)
                                 <div class="flex items-center space-x-1 bg-gray-100 px-2 py-1 rounded">
                                     <input 
@@ -44,8 +42,8 @@
                 </form>
             </div>
 
-            <!-- Search Results (Wider Center) -->
-            <div class="col-span-8 bg-white shadow-md rounded-none p-3">
+            <!-- Search Results (Center) -->
+            <div class="col-span-8 p-3">
                 <!-- Search Bar -->
                 <form action="{{ route('search') }}" method="GET" class="mb-5">
                     <div class="flex items-center space-x-2">
@@ -54,7 +52,7 @@
                             name="query" 
                             value="{{ request('query') }}" 
                             placeholder="Search again..." 
-                            class="input input-bordered w-full"
+                            class="input input-bordered w-full bg-transparent border-gray-300 rounded-lg px-4 py-2 text-gray-500"
                             required>
                         <button type="submit" class="btn btn-primary">Search</button>
                     </div>
@@ -73,6 +71,10 @@
                             </li>
                         @endforeach
                     </ul>
+                    <!-- Pagination Links -->
+                    <div class="mt-5">
+                        {{ $results->links() }}
+                    </div>
                 @endif
 
                 <div class="mt-5">
