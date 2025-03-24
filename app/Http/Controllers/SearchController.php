@@ -10,24 +10,38 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-
-        // Search query with pagination (10 results per page)
-        $results = KekayaanIntelektual::where('title', 'like', "%{$query}%")
-            ->orWhere('category', 'like', "%{$query}%")
-            ->orWhereHas('hakCipta', function ($q) use ($query) {
-                $q->where('hak_cipta_number', 'like', "%{$query}%");
-            })
-            ->orWhereHas('paten', function ($q) use ($query) {
-                $q->where('paten_number', 'like', "%{$query}%");
-            })
-            ->paginate(10); // Pagination applied
-
-        return view('search_result', compact('query', 'results'));
-    }
+        $filter = $request->input('filter'); // Get the filter value from the dropdown
+        $sort = $request->input('sort'); // Get the sort value (date or A-Z)
     
-    public function advancedSearch(Request $request)
-    {
-        // Implementasikan logika pencarian lanjutan di sini
-        return view('search.results'); // Gantilah dengan view hasil pencarian yang sesuai
+        // Base query
+        $results = KekayaanIntelektual::query();
+    
+        // Apply filter based on the "type" field
+        if ($filter === 'hak_cipta') {
+            $results->where('type', 'hak_cipta');
+        } elseif ($filter === 'paten') {
+            $results->where('type', 'paten');
+        }
+    
+        // Apply search query
+        if (!empty($query)) {
+            $results->where(function ($q) use ($query) {
+                $q->where('title', 'like', "%{$query}%")
+                  ->orWhere('category', 'like', "%{$query}%");
+            });
+        }
+    
+        // Apply sorting
+        if ($sort === 'date') {
+            $results->orderBy('created_at', 'desc'); // Sort by date (newest first)
+        } elseif ($sort === 'az') {
+            $results->orderBy('title', 'asc'); // Sort alphabetically (A-Z)
+        }
+    
+        // Paginate the results
+        $results = $results->paginate(10);
+    
+        // Return the view with results
+        return view('search_result', compact('query', 'filter', 'sort', 'results'));
     }
 }
