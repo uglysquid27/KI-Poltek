@@ -44,12 +44,12 @@
 
         <div class="flex justify-between space-x-2">
             <!-- Reset Filters Button -->
-            <button type="reset" class="bg-gray-500 rounded-lg p-2 cursor-pointer hover:bg-gray-800 w-1/2">
+            <button type="reset" class="bg-gray-500 rounded-lg p-2 cursor-pointer transition ease-in-out hover:bg-gray-600 w-1/2">
                 Reset Filters
             </button>
         
             <!-- Apply Filters Button -->
-            <button type="submit" class="bg-[#051D47] rounded-lg p-2 cursor-pointer hover:bg-blue-800 w-1/2">
+            <button type="submit" class="bg-[#051D47] rounded-lg p-2 cursor-pointer transition ease-in-out hover:bg-blue-800 w-1/2">
                 Apply Filters
             </button>
         </div>

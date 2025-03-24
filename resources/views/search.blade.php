@@ -22,8 +22,9 @@
             <div class="relative w-1/4">
                 <button id="dropdownButton" type="button"
                     class="w-full bg-transparent border border-gray-300 text-gray-600 rounded-full px-4 py-2 text-left focus:outline-none">
-                    <span
-                        id="dropdownSelected">{{ request('filter') ? ucfirst(request('filter')) : 'Select Filter' }}</span>
+                    <span id="dropdownSelected">
+                        {{ request('filter') ? ucfirst(request('filter')) : 'Hak Cipta' }}
+                    </span>
                     <svg class="w-5 h-5 inline-block float-right" xmlns="http://www.w3.org/2000/svg" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -34,14 +35,13 @@
                     <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-600" data-value="hak_cipta">Hak Cipta
                     </li>
                     <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-600" data-value="paten">Paten</li>
-                    <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-600" data-value="">All</li>
                 </ul>
-                <input type="hidden" name="filter" id="filter" value="{{ request('filter') }}">
+                <input type="hidden" name="filter" id="filter" value="{{ request('filter') ?? 'hak_cipta' }}">
             </div>
 
             <!-- Search Input -->
             <input type="text" name="query" value="{{ request('query') }}" placeholder="Search by title, author, etc."
-                class="input input-bordered w-full px-4 py-2 text-gray-600 bg-transparent focus:bg-transparent" required>
+                class="input input-bordered w-full px-4 py-2 text-gray-600 bg-transparent focus:ring-0" required>
 
             <!-- Search Button -->
             <button type="submit"
@@ -51,8 +51,8 @@
                     <g>
                         <path
                             d="M484.1,454.796l-110.5-110.6c29.8-36.3,47.6-82.8,47.6-133.4c0-116.3-94.3-210.6-210.6-210.6S0,94.496,0,210.796
-                                    s94.3,210.6,210.6,210.6c50.8,0,97.4-18,133.8-48l110.5,110.5c12.9,11.8,25,4.2,29.2,0C492.5,475.596,492.5,463.096,484.1,454.796z
-                                    M41.1,210.796c0-93.6,75.9-169.5,169.5-169.5s169.6,75.9,169.6,169.5s-75.9,169.5-169.5,169.5S41.1,304.396,41.1,210.796z" />
+                                        s94.3,210.6,210.6,210.6c50.8,0,97.4-18,133.8-48l110.5,110.5c12.9,11.8,25,4.2,29.2,0C492.5,475.596,492.5,463.096,484.1,454.796z
+                                        M41.1,210.796c0-93.6,75.9-169.5,169.5-169.5s169.6,75.9,169.6,169.5s-75.9,169.5-169.5,169.5S41.1,304.396,41.1,210.796z" />
                     </g>
                 </svg>
             </button>
@@ -151,5 +151,5 @@
             }
         });
     </script>
-    
+
 @endsection

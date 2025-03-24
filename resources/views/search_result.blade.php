@@ -13,19 +13,42 @@
                 <!-- Search Bar -->
                 <form action="{{ route('search') }}" method="GET"
                     class="mb-5 input-bordered border border-gray-300 p-2 rounded-full">
+
                     <div class="flex items-center space-x-2 ">
+                        <div class="relative w-1/7">
+                            <button id="dropdownButton" type="button"
+                                class="w-full bg-transparent border border-gray-300 text-gray-600 rounded-full px-4 py-2 text-left focus:outline-none">
+                                <span id="dropdownSelected">
+                                    {{ request('filter') ? ucfirst(request('filter')) : 'Hak Cipta' }}
+                                </span>
+                                <svg class="w-5 h-5 inline-block float-right" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <ul id="dropdownMenu"
+                                class="absolute z-10 hidden bg-white border border-gray-300 rounded-lg shadow-lg w-full mt-1 opacity-0 transform scale-95 transition-all duration-300 ease-in-out">
+                                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-600" data-value="hak_cipta">
+                                    Hak Cipta
+                                </li>
+                                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer text-gray-600" data-value="paten">
+                                    Paten</li>
+                            </ul>
+                            <input type="hidden" name="filter" id="filter" value="{{ request('filter') ?? 'hak_cipta' }}">
+                        </div>
                         <input type="text" name="query" value="{{ request('query') }}" placeholder="Search again..."
-                        class="w-full bg-transparent rounded-lg px-4 py-2 text-gray-500 focus:outline-none focus:ring-0" required>
-                        <button type="submit"
-                            class="w-10 h-10 flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white rounded-full transition">
-                            <svg fill="#f0f0f0" height="20px" width="20px" version="1.1" id="Capa_1"
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                viewBox="0 0 490.4 490.4" xml:space="preserve">
+                            class="w-full bg-transparent rounded-lg px-4 py-2 text-gray-500 focus:outline-none focus:ring-0"
+                            required>
+                            <button type="submit"
+                            class="px-3 py-3 text-white bg-[#68C5CC] hover:bg-[#5bb3b8] transition duration-200 cursor-pointer rounded-full">
+                            <svg fill="#f0f0f0" height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 490.4 490.4" xml:space="preserve">
                                 <g>
                                     <path
                                         d="M484.1,454.796l-110.5-110.6c29.8-36.3,47.6-82.8,47.6-133.4c0-116.3-94.3-210.6-210.6-210.6S0,94.496,0,210.796
-                                            s94.3,210.6,210.6,210.6c50.8,0,97.4-18,133.8-48l110.5,110.5c12.9,11.8,25,4.2,29.2,0C492.5,475.596,492.5,463.096,484.1,454.796z
-                                            M41.1,210.796c0-93.6,75.9-169.5,169.5-169.5s169.6,75.9,169.6,169.5s-75.9,169.5-169.5,169.5S41.1,304.396,41.1,210.796z" />
+                                                    s94.3,210.6,210.6,210.6c50.8,0,97.4-18,133.8-48l110.5,110.5c12.9,11.8,25,4.2,29.2,0C492.5,475.596,492.5,463.096,484.1,454.796z
+                                                    M41.1,210.796c0-93.6,75.9-169.5,169.5-169.5s169.6,75.9,169.6,169.5s-75.9,169.5-169.5,169.5S41.1,304.396,41.1,210.796z" />
                                 </g>
                             </svg>
                         </button>
@@ -33,21 +56,37 @@
                 </form>
 
                 <!-- Search Results -->
-                <h1 class="text-xl font-bold text-gray-500 mb-3">Search Results for: "{{ request('query') }}"</h1>
-
-                <!-- Filter Options -->
-                 <form action="{{ route('search') }}" method="GET" id="filterForm" class="flex items-center space-x-2 my-3">
-        <!-- Preserve the search query -->
-        <input type="hidden" name="query" value="{{ request('query') }}">
-
-        <!-- Sort Dropdown -->
-        {{-- <label for="sort" class="text-sm font-medium text-gray-600">Sort By:</label> --}}
-        <select name="sort" id="sort" class="select select-bordered text-gray-600 bg-transparent w-1/8 border-1 border-gray-500 rounded-full" onchange="document.getElementById('filterForm').submit();">
-            <option value="">Select</option>
-            <option value="date" {{ request('sort') == 'date' ? 'selected' : '' }}>Date</option>
-            <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>A - Z</option>
-        </select>
-    </form>
+                <h1 class="text-xl font-bold text-gray-500 mb-3">
+                    {{ $results->total() }} result{{ $results->total() > 1 ? 's' : '' }} for "{{ request('query') }}"
+                </h1>
+                <div class="flex items-center space-x-4 my-3">
+                    <!-- Sort Dropdowns -->
+                    <form action="{{ route('search') }}" method="GET" id="sortForm" class="flex items-center space-x-4">
+                        <!-- Preserve the search query and filter -->
+                        <input type="hidden" name="query" value="{{ request('query') }}">
+                        <input type="hidden" name="filter" value="{{ request('filter') }}">
+                
+                        <!-- Date Sort Dropdown -->
+                        <select name="sort" id="sortDate"
+                            class="select select-bordered text-gray-600 bg-transparent w-40 border-1 border-gray-500 rounded-full"
+                            onchange="document.getElementById('sortForm').submit();">
+                            <option value="">Sort By Date</option>
+                            <option value="date_asc" {{ request('sort') == 'date_asc' ? 'selected' : '' }}>Date (Ascending)</option>
+                            <option value="date_desc" {{ request('sort') == 'date_desc' ? 'selected' : '' }}>Date (Descending)</option>
+                        </select>
+                
+                        <!-- Alphabetical Sort Dropdown -->
+                        <select name="sort" id="sortAlpha"
+                            class="select select-bordered text-gray-600 bg-transparent w-40 border-1 border-gray-500 rounded-full"
+                            onchange="document.getElementById('sortForm').submit();">
+                            <option value="">Sort Alphabetically</option>
+                            <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>A - Z</option>
+                            <option value="za" {{ request('sort') == 'za' ? 'selected' : '' }}>Z - A</option>
+                        </select>
+                    </form>
+                </div>
+                
+                
 
                 @if($results->isEmpty())
                     <p class="text-red-500 mt-3">No results found.</p>
@@ -72,8 +111,16 @@
                                                             {{ ucfirst($result->status) }}
                                                         </div>
                                                     </div>
+                                                    <!-- Conditional Number Field -->
                                                     <p class="text-gray-400 font-medium text-sm text-gray-500">
-                                                        {{ $result->registration_number }}</p>
+                                                        @if ($result->type === 'hak_cipta' && $result->hakCipta)
+                                                            {{ $result->hakCipta->hak_cipta_number }}
+                                                        @elseif ($result->type === 'paten' && $result->paten)
+                                                            {{ $result->paten->paten_number }}
+                                                        @else
+                                                            {{ $result->registration_number }}
+                                                        @endif
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
@@ -84,12 +131,12 @@
                     </div>
                 @endif
 
-<!-- Pagination -->
-@if ($results->hasPages())
-    <div class="mt-5">
-        {{ $results->appends(request()->query())->links() }}
-    </div>
-@endif
+                <!-- Pagination -->
+                @if ($results->hasPages())
+                    <div class="my-5">
+                        {{ $results->appends(request()->query())->links() }}
+                    </div>
+                @endif
             </div>
 
             <!-- Related Results (Right - Smaller) -->
@@ -98,6 +145,52 @@
                 <ul class="space-y-2">
                 </ul>
             </div> --}}
+            <script>
+                const dropdownButton = document.getElementById('dropdownButton');
+                const dropdownMenu = document.getElementById('dropdownMenu');
+                const dropdownSelected = document.getElementById('dropdownSelected');
+                const filterInput = document.getElementById('filter');
+
+                dropdownButton.addEventListener('click', () => {
+                    if (dropdownMenu.classList.contains('hidden')) {
+                        dropdownMenu.classList.remove('hidden', 'opacity-0', 'scale-95');
+                        dropdownMenu.classList.add('opacity-100', 'scale-100');
+                    } else {
+                        dropdownMenu.classList.remove('opacity-100', 'scale-100');
+                        dropdownMenu.classList.add('opacity-0', 'scale-95');
+                        setTimeout(() => {
+                            dropdownMenu.classList.add('hidden');
+                        }, 300); // Matches the transition duration
+                    }
+                });
+
+                dropdownMenu.querySelectorAll('li').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const value = item.getAttribute('data-value');
+                        const text = item.textContent;
+
+                        filterInput.value = value;
+                        dropdownSelected.textContent = text;
+
+                        dropdownMenu.classList.remove('opacity-100', 'scale-100');
+                        dropdownMenu.classList.add('opacity-0', 'scale-95');
+                        setTimeout(() => {
+                            dropdownMenu.classList.add('hidden');
+                        }, 300); // Matches the transition duration
+                    });
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                        dropdownMenu.classList.remove('opacity-100', 'scale-100');
+                        dropdownMenu.classList.add('opacity-0', 'scale-95');
+                        setTimeout(() => {
+                            dropdownMenu.classList.add('hidden');
+                        }, 300); // Matches the transition duration
+                    }
+                });
+            </script>
         </div>
     </div>
 @endsection
