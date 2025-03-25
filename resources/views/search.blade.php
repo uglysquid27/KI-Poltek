@@ -17,11 +17,11 @@
 
         <!-- Form in the Center -->
         <form action="{{ route('search') }}" method="GET"
-            class="flex items-center w-full max-w-4xl space-x-2 input-bordered border border-gray-300 p-2 rounded-full font-montserrat">
+            class="flex items-center w-full max-w-4xl space-x-2 input-bordered border border-gray-600 p-2 rounded-full font-montserrat">
             <!-- Custom Dropdown -->
             <div class="relative w-1/4">
                 <button id="dropdownButton" type="button"
-                    class="w-full bg-transparent border border-gray-300 text-gray-600 rounded-full px-4 py-2 text-left focus:outline-none">
+                    class="w-full bg-transparent border border-gray-600 text-gray-600 rounded-full px-4 py-2 text-left focus:outline-none">
                     <span id="dropdownSelected">
                         {{ request('filter') ? ucfirst(request('filter')) : 'Hak Cipta' }}
                     </span>

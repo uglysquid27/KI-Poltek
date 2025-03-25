@@ -13,7 +13,7 @@ class Paten extends Model
 
     public function kekayaanIntelektual()
     {
-        return $this->belongsTo(KekayaanIntelektual::class, 'ki_id');
+        return $this->belongsTo(KekayaanIntelektual::class, 'ki_id', 'ki_id');
     }
     
     public function pemegangs()

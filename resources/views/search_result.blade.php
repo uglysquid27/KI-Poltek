@@ -12,12 +12,12 @@
             <div class="col-span-8 p-3">
                 <!-- Search Bar -->
                 <form action="{{ route('search') }}" method="GET"
-                    class="mb-5 input-bordered border border-gray-300 p-2 rounded-full">
+                    class="mb-5 input-bordered border border-gray-600 p-2 rounded-full">
 
                     <div class="flex items-center space-x-2 ">
                         <div class="relative w-1/7">
                             <button id="dropdownButton" type="button"
-                                class="w-full bg-transparent border border-gray-300 text-gray-600 rounded-full px-4 py-2 text-left focus:outline-none">
+                                class="w-full bg-transparent border border-gray-600 text-gray-600 rounded-full px-4 py-2 text-left focus:outline-none">
                                 <span id="dropdownSelected">
                                     {{ request('filter') ? ucfirst(request('filter')) : 'Hak Cipta' }}
                                 </span>
@@ -94,7 +94,11 @@
                     <!-- Card-based Search Results -->
                     <div class="space-y-4">
                         @foreach($results as $result)
-                            <a href="/link/{{ $result->id }}" class="block">
+                        {{-- <pre>{{ $result }}</pre>
+                        <script>
+                            console.log(@json($result));
+                        </script> --}}
+                        <a href="{{ $result->type === 'hak_cipta' ? route('hak_cipta.detail', ['ki_id' => $result->ki_id]) : route('paten.detail', ['id' => $result->ki_id]) }}" class="block">
                                 <div class="flex flex-col border-b pb-4 border-gray-300">
                                     <div class="flex flex-col gap-1">
                                         <div class="flex justify-between items-start w-full gap-4">
