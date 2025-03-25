@@ -52,12 +52,12 @@ Copy the .env.example file to .env:
 cp [.env.example](http://_vscodecontentref_/1) .env
 
 Edit the .env file to configure your database and other environment variables:</br>
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=your_database_name
-DB_USERNAME=your_database_user
-DB_PASSWORD=your_database_password
+DB_CONNECTION=mysql</br>
+DB_HOST=127.0.0.1</br>
+DB_PORT=3306</br>
+DB_DATABASE=your_database_name</br>
+DB_USERNAME=your_database_user</br>
+DB_PASSWORD=your_database_password</br>
 
 ---
 
