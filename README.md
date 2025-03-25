@@ -51,7 +51,7 @@ npm install
 Copy the .env.example file to .env:
 cp [.env.example](http://_vscodecontentref_/1) .env
 
-dit the .env file to configure your database and other environment variables:
+Edit the .env file to configure your database and other environment variables:</br>
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
