@@ -17,7 +17,7 @@ KI-Poltek is a Laravel-based web application designed to manage intellectual pro
 
 Before you begin, ensure you have the following installed on your system:
 
-- PHP >= 8.0
+- PHP >= 8.2
 - Composer
 - Node.js and npm
 - MySQL or any other supported database
@@ -51,7 +51,7 @@ npm install
 Copy the .env.example file to .env:
 cp [.env.example](http://_vscodecontentref_/1) .env
 
-dit the .env file to configure your database and other environment variables:
+edit the .env file to configure your database and other environment variables:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
