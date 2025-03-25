@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('patens', function (Blueprint $table) {
-            $table->id('paten_id');
+            $table->id(); // Default primary key column named 'id'
             $table->unsignedBigInteger('ki_id');
             $table->string('paten_number')->unique();
             $table->date('validity');

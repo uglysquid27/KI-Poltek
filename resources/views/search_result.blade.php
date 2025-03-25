@@ -112,7 +112,7 @@
                                                         </div>
                                                     </div>
                                                     <!-- Conditional Number Field -->
-                                                    <p class="text-gray-400 font-medium text-sm text-gray-500">
+                                                    <p class=" font-medium text-sm text-gray-500">
                                                         @if ($result->type === 'hak_cipta' && $result->hakCipta)
                                                             {{ $result->hakCipta->hak_cipta_number }}
                                                         @elseif ($result->type === 'paten' && $result->paten)

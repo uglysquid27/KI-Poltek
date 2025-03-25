@@ -8,7 +8,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('hak_ciptas', function (Blueprint $table) {
-            $table->id('hak_cipta_id');
+            $table->id(); // Default primary key column named 'id'
             $table->unsignedBigInteger('ki_id');
             $table->string('hak_cipta_number')->unique();
             $table->string('type');

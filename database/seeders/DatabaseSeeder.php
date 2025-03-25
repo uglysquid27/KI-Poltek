@@ -13,6 +13,10 @@ class DatabaseSeeder extends Seeder
             KekayaanIntelektualSeeder::class,
             HakCiptaSeeder::class,
             PatenSeeder::class,
+            KonsultanSeeder::class,
+            PemegangSeeder::class,
+            PenciptaSeeder::class,
+            InventorSeeder::class,
         ]);
     }
 }
