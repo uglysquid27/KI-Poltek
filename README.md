@@ -30,18 +30,21 @@ Before you begin, ensure you have the following installed on your system:
 Follow these steps to clone and set up the project:
 
 ### 1. Clone the Repository
-```bash
+
 git clone https://github.com/your-username/KI-Poltek.git
 cd KI-Poltek
 
+---
 
-## Install Dependencies
+## 2. Install Dependencies
 
 Run the following command to install PHP dependencies:
 composer install
 
 Install JavaScript dependencies:
 npm install
+
+---
 
 ## 3. Set Up Environment Variables
 
@@ -56,9 +59,13 @@ DB_DATABASE=your_database_name
 DB_USERNAME=your_database_user
 DB_PASSWORD=your_database_password
 
+---
+
 ## 4. Generate Application Key
 Run the following command to generate the application key:
 php artisan key:generate
+
+---
 
 ## 5. Run Database Migrations
 Run the migrations to set up the database schema:
@@ -67,12 +74,16 @@ php artisan migrate
 (Optional) Seed the database with sample data:
 php artisan db:seed
 
+---
+
 ## 6. Build Frontend Assets
 Compile the frontend assets using Laravel Mix:
 npm run dev
 
 For production:
 npm run build
+
+---
 
 ## 7. Start the Development Server
 Run the following command to start the Laravel development server:
