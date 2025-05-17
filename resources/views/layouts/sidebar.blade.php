@@ -42,6 +42,39 @@
             </div>
         </div>
 
+        <div>
+            <h3 class="text-sm font-medium text-gray-700 mb-2">Berdasarkan Nama</h3>
+            
+            <div class="flex flex-col w-full mb-5">
+                <div data-orientation="horizontal" role="none" class="shrink-0 bg-[#051D47] h-[2px] w-full"></div>
+                <div data-orientation="horizontal" role="none" class="shrink-0 bg-[#051D47] h-[3px] w-5/12"></div>
+            </div>
+            <div class="my-2">
+                <label for="permohonan" class="block text-sm font-medium text-gray-700 mb-2">Nama Pemegang</label>
+                <input type="text" name="category" id="category" value="{{ request('category') }}" 
+                    placeholder="Enter category (e.g., patent, copyright, trademark)" 
+                    class="input input-bordered w-full bg-transparent text-gray-600 border-1 border-gray-600">
+            </div>
+            <div class="my-2">
+                <label for="pendaftaran" class="block text-sm font-medium text-gray-700 mb-2">Nama Pencipta</label>
+                <input type="text" name="category" id="category" value="{{ request('category') }}" 
+                    placeholder="Enter category (e.g., patent, copyright, trademark)" 
+                    class="input input-bordered w-full bg-transparent text-gray-600 border-1 border-gray-600">
+            </div>
+            <div class="my-2">
+                <label for="pendaftaran" class="block text-sm font-medium text-gray-700 mb-2">Nama Inventor</label>
+                <input type="text" name="category" id="category" value="{{ request('category') }}" 
+                    placeholder="Enter category (e.g., patent, copyright, trademark)" 
+                    class="input input-bordered w-full bg-transparent text-gray-600 border-1 border-gray-600">
+            </div>
+            <div class="my-2">
+                <label for="pendaftaran" class="block text-sm font-medium text-gray-700 mb-2">Nama Konsultan</label>
+                <input type="text" name="category" id="category" value="{{ request('category') }}" 
+                    placeholder="Enter category (e.g., patent, copyright, trademark)" 
+                    class="input input-bordered w-full bg-transparent text-gray-600 border-1 border-gray-600">
+            </div>
+        </div>
+
         <div class="flex justify-between space-x-2">
             <!-- Reset Filters Button -->
             <button type="reset" class="bg-gray-500 rounded-lg p-2 cursor-pointer transition ease-in-out hover:bg-gray-600 w-1/2">
