@@ -4,31 +4,29 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session; // Needed for flash messages with back()
-// Removed: use App\Models\User; // Not explicitly needed if only using Auth::attempt
-// Removed: use Illuminate\Support\Facades\Hash; // Not explicitly needed if only using Auth::attempt
-// Removed: use Illuminate\Support\Str; // Not needed for standard Auth
-// Removed: use Illuminate\Http\Cookie; // Not needed for standard Auth
+use App\Models\User; // Pastikan Anda memiliki model User
+use Illuminate\Support\Facades\Hash; // Untuk memeriksa password
+use Illuminate\Support\Str; // Untuk menghasilkan string acak (token)
+use Illuminate\Http\Cookie; // Untuk membuat cookie secara manual
 
 class LoginController extends Controller
 {
     /**
-     * Show the login form.
+     * Menampilkan formulir login.
      *
      * @return \Illuminate\View\View
      */
     public function showLoginForm()
     {
-        // Assuming your login Blade file is resources/views/login.blade.php
+        // View login Anda
         return view('auth.login');
     }
 
     /**
-     * Handle login request.
+     * Menangani permintaan login secara manual (tanpa Auth::attempt).
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
@@ -37,40 +35,59 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $user = User::where('email', $request->email)->first();
 
-        if (Auth::attempt($credentials)) {
-            // Regenerate the session ID for security reasons
-            $request->session()->regenerate();
+        if ($user && Hash::check($request->password, $user->password)) {
+            // Hasilkan token yang aman dan unik
+            $token = Str::random(60);
 
-            // Redirect to the intended URL or the dashboard route
-            // This will perform a HTTP redirect to the dashboard URL
-            return redirect()->intended(route('dashboard'));
+            // Simpan token di database untuk pengguna
+            $user->remember_token = $token;
+            $user->save();
+
+            // Buat cookie secara manual untuk menyimpan token
+            // Nama: 'auth_token'
+            // Nilai: $token
+            // Kedaluwarsa: 1 minggu (60 menit * 24 jam * 7 hari)
+            // Path: '/'
+            // Domain: null (default ke domain saat ini)
+            // Secure: false (gunakan true untuk HTTPS di produksi)
+            // HttpOnly: true (mencegah akses JavaScript)
+            $cookie = cookie('auth_token', $token, 60 * 24 * 7, '/', null, false, true);
+
+            // Redirect ke dashboard dan sertakan cookie
+            return redirect()->route('dashboard')->with('success', 'Login berhasil!')->withCookie($cookie);
+
         }
 
-        // If authentication fails, redirect back with an error message and old input
-        return back()->withErrors([
-            'email' => 'These credentials do not match our records.',
-        ])->withInput($request->only('email'));
+        // Jika autentikasi gagal, redirect kembali dengan error
+        return back()->with('error', 'Kredensial ini tidak cocok dengan catatan kami.')->withInput($request->only('email'));
     }
 
     /**
-     * Handle logout request.
+     * Menangani permintaan logout secara manual.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function logout(Request $request)
     {
-        Auth::logout(); // Log out the authenticated user
+        // Ambil token dari cookie
+        $token = $request->cookie('auth_token');
 
-        // Invalidate the session
-        $request->session()->invalidate();
+        if ($token) {
+            // Temukan pengguna berdasarkan token dan hapus tokennya
+            $user = User::where('remember_token', $token)->first();
+            if ($user) {
+                $user->remember_token = null;
+                $user->save();
+            }
+        }
 
-        // Regenerate the CSRF token
-        $request->session()->regenerateToken();
+        // Buat cookie kedaluwarsa untuk menghapusnya dari browser
+        $expiredCookie = cookie('auth_token', null, -1, '/', null, false, true);
 
-        // Redirect to the login page with a success message
-        return redirect()->route('login')->with('success', 'Logged out successfully!');
+        // Redirect ke halaman login dan hapus cookie
+        return redirect()->route('login')->with('success', 'Berhasil logout!')->withCookie($expiredCookie);
     }
 }
