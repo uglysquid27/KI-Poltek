@@ -8,10 +8,13 @@
             </span>
         </a>
     </div>
-    <div class="flex-none flex items-center space-x-20 mr-5">
-        <a class="text-gray-700 hover:text-gray-900">Penelurusan</a>
-        <a class="text-gray-700 hover:text-gray-900">Total</a>
-        <a class="text-gray-700 hover:text-gray-900">Panduan</a>
-        {{-- <a href="{{ route('login') }}" class="btn btn-primary">Login</a> --}}
+   <div class="flex-none flex items-center space-x-5 mr-5"> {{-- Adjusted space-x for better spacing with new button --}}
+        <a class="text-gray-700 hover:text-gray-900 transition duration-200">Penelurusan</a>
+        <a class="text-gray-700 hover:text-gray-900 transition duration-200">Total</a>
+        <a class="text-gray-700 hover:text-gray-900 transition duration-200">Panduan</a>
+        {{-- Login Button --}}
+        <a href="{{ route('login') }}" class="px-5 py-2 text-white bg-[#68C5CC] hover:bg-[#5bb3b8] transition duration-200 cursor-pointer rounded-full font-semibold shadow-md">
+            Login
+        </a>
     </div>
 </div>
