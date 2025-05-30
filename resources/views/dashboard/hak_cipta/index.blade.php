@@ -1,45 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('title', 'Daftar Hak Cipta')
 
 @section('content')
-    <div class="min-h-screen flex flex-col pt-28">
-        {{-- Navbar --}}
-        <div class="navbar bg-[#ffffff] shadow-sm w-full z-50 fixed top-0">
-            <div class="flex-1 flex items-center m-2">
-                <a href="/" class="text-xl flex items-center space-x-2 ml-5">
-                    <img src="{{ asset('img/logo_polinema.png') }}" alt="Logo" class="h-13 w-auto">
-                    <span class="text-sm font-semibold text-gray-700" style="font-family: 'Montserrat', sans-serif;">
-                        Kekayaan Intelektual Politeknik Negeri Malang
-                    </span>
-                </a>
-            </div>
-            <div class="flex-none flex items-center space-x-5 mr-5">
-                <a class="text-gray-700 hover:text-gray-900 transition duration-200">Penelurusan</a>
-                <a class="text-gray-700 hover:text-gray-900 transition duration-200">Total</a>
-                <a class="text-gray-700 hover:text-gray-900 transition duration-200">Panduan</a>
-                @php
-                    // Manual authentication check for Blade
-                    $authenticatedUser = null;
-                    $token = request()->cookie('auth_token');
-                    if ($token) {
-                        $authenticatedUser = \App\Models\User::where('remember_token', $token)->first();
-                    }
-                @endphp
-                @if($authenticatedUser)
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="px-5 py-2 text-white bg-red-500 hover:bg-red-600 transition duration-200 cursor-pointer rounded-full font-semibold shadow-md">
-                            Logout
-                        </button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="px-5 py-2 text-white bg-[#68C5CC] hover:bg-[#5bb3b8] transition duration-200 cursor-pointer rounded-full font-semibold shadow-md">
-                        Login
-                    </a>
-                @endif
-            </div>
-        </div>
+    <div class="min-h-screen flex flex-col"> {{-- This padding pushes content below the main fixed navbar --}}
+        {{-- The navbar code was removed from here. It should be in layouts/app.blade.php --}}
 
         <div class="flex-grow flex flex-col md:flex-row p-6 bg-gray-100">
             {{-- Include the sidebar from its new layout location --}}
@@ -49,31 +14,31 @@
                 <h1 class="text-3xl font-bold text-gray-700 mb-6">Daftar Hak Cipta Anda</h1>
 
                 @if (session('success'))
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative mb-4 shadow-sm" role="alert"> {{-- Added rounded-lg shadow-sm --}}
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg relative mb-4 shadow-sm" role="alert">
                         <span class="block sm:inline">{{ session('success') }}</span>
                     </div>
                 @endif
                 @if (session('error'))
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4 shadow-sm" role="alert"> {{-- Added rounded-lg shadow-sm --}}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4 shadow-sm" role="alert">
                         <span class="block sm:inline">{{ session('error') }}</span>
                     </div>
                 @endif
 
-                <div class="bg-white p-6 rounded-lg shadow-xl"> {{-- Increased shadow for main content card --}}
+                <div class="bg-white p-6 rounded-lg shadow-xl">
                     <div class="flex justify-end mb-4">
-                        <a href="{{ route('dashboard.hak_cipta.create') }}" class="px-6 py-3 text-white bg-[#68C5CC] hover:bg-[#5bb3b8] transition duration-200 cursor-pointer rounded-full font-semibold text-base shadow-md transform hover:scale-105"> {{-- Enhanced button style --}}
+                        <a href="{{ route('dashboard.hak_cipta.create') }}" class="px-6 py-3 text-white bg-[#68C5CC] hover:bg-[#5bb3b8] transition duration-200 cursor-pointer rounded-full font-semibold text-base shadow-md transform hover:scale-105">
                             + Unggah Hak Cipta Baru
                         </a>
                     </div>
 
                     @if($hakCiptas->isEmpty())
-                        <p class="text-gray-700 text-center py-8 text-lg">Belum ada data Hak Cipta yang diunggah.</p> {{-- Increased text size --}}
+                        <p class="text-gray-700 text-center py-8 text-lg">Belum ada data Hak Cipta yang diunggah.</p>
                     @else
-                        <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm"> {{-- Added rounded-lg, border, shadow to table container --}}
-                            <table class="min-w-full divide-y divide-gray-200"> {{-- Removed bg-white, added divide-y --}}
-                                <thead class="bg-gray-50"> {{-- Light background for header --}}
+                        <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th> {{-- Increased padding, smaller text, uppercase, tracking --}}
+                                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul Karya</th>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Jenis Karya</th>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Pencipta Utama</th>
@@ -82,10 +47,10 @@
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200"> {{-- Background for body, divide-y for rows --}}
+                                <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($hakCiptas as $hakCipta)
-                                        <tr class="hover:bg-gray-50 transition duration-150 ease-in-out"> {{-- Hover effect for rows --}}
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $hakCipta->id }}</td> {{-- Increased padding, text size, font weight --}}
+                                        <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $hakCipta->id }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ Str::limit($hakCipta->judul_karya, 50) }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ $hakCipta->jenis_karya }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ $hakCipta->pencipta_nama }}</td>
@@ -104,7 +69,7 @@
                                                 </span>
                                             </td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
-                                                {{-- <a href="{{ route('dashboard.hak_cipta.show', $hakCipta->id) }}" class="text-[#68C5CC] hover:text-[#5bb3b8] hover:underline font-medium">Detail</a> Enhanced link style --}}
+                                                {{-- <a href="{{ route('dashboard.hak_cipta.show', $hakCipta->id) }}" class="text-[#68C5CC] hover:text-[#5bb3b8] hover:underline font-medium">Detail</a> --}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -114,7 +79,7 @@
 
                         {{-- Pagination Links --}}
                         <div class="mt-6">
-                            {{ $hakCiptas->links('pagination::tailwind') }} {{-- Use Tailwind pagination view --}}
+                            {{ $hakCiptas->links('pagination::tailwind') }}
                         </div>
                     @endif
                 </div>

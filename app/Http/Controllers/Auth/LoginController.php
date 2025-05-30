@@ -56,7 +56,7 @@ class LoginController extends Controller
             $cookie = cookie('auth_token', $token, 60 * 24 * 7, '/', null, false, true);
 
             // Redirect ke dashboard dan sertakan cookie
-            return redirect()->route('dashboard')->with('success', 'Login berhasil!')->withCookie($cookie);
+            return redirect()->route('dashboard.dashboard')->with('success', 'Login berhasil!')->withCookie($cookie);
 
         }
 
