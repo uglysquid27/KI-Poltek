@@ -13,9 +13,30 @@ use Illuminate\Support\Facades\Storage; // Untuk link file
 class DashboardHakCiptaController extends Controller
 {
      //DASHBOARD CONTROLLER
-     public function index()
+   /**
+     * Menampilkan daftar entri Hak Cipta di dashboard dengan paginasi.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index()
     {
-        return view('dashboard.hak_cipta.index');
+        // Pastikan hanya pengguna terautentikasi yang bisa mengakses
+        $token = request()->cookie('auth_token');
+        $authenticatedUser = null;
+        if ($token) {
+            $authenticatedUser = User::where('remember_token', $token)->first();
+        }
+        if (!$authenticatedUser) {
+            return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
+        }
+
+        // Mengambil daftar Hak Cipta.
+        // Jika Anda ingin hanya menampilkan Hak Cipta milik pengguna yang login,
+        // ubah menjadi: $hakCiptas = HakCipta::where('user_id', $authenticatedUser->user_id)->paginate(10);
+        // Eager load kekayaanIntelektual untuk mengakses judul dan status
+        $hakCiptas = HakCipta::with('kekayaanIntelektual')->paginate(10); // Mengambil 10 item per halaman
+
+        return view('dashboard.hak_cipta.index', compact('hakCiptas'));
     }
 
     /**
@@ -87,7 +108,7 @@ class DashboardHakCiptaController extends Controller
             'kota_pengumuman' => 'required|string|max:255',
             'tanggal_pengumuman' => 'required|date',
             'dokumen_ciptaan' => 'nullable|file|mimes:pdf,docx|max:10240',
-            'pernyataan_setuju' => 'accepted', // Diubah kembali menjadi 'accepted'
+            'pernyataan_setuju' => 'accepted',
         ]);
 
         $filePathKtp = null;
@@ -153,7 +174,7 @@ class DashboardHakCiptaController extends Controller
             'kota_pengumuman' => $validatedData['kota_pengumuman'],
             'tanggal_pengumuman' => $validatedData['tanggal_pengumuman'],
             'file_path_ciptaan' => $filePathCiptaan,
-            'pernyataan_setuju' => $request->has('pernyataan_setuju'), // Pastikan ini true jika dicentang, false jika tidak
+            'pernyataan_setuju' => $request->has('pernyataan_setuju'),
         ];
 
         try {
