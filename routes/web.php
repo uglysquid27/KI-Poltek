@@ -1,13 +1,14 @@
 <?php
 
+use App\Http\Controllers\PatenController;
 use App\Http\Controllers\HakCiptaController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HakCiptaController as PublicHakCiptaController; // Alias untuk controller publik
-use App\Http\Controllers\PatenController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DashboardHakCiptaController; 
+use App\Http\Controllers\DashboardHakCiptaController;
+use App\Http\Controllers\DashboardPatenController; // Pastikan ini mengarah ke DashboardPatenController
 
 
 /*
@@ -47,12 +48,14 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/', [DashboardHakCiptaController::class, 'index'])->name('index'); // PASTIKAN MENGGUNAKAN DashboardHakCiptaController
         Route::get('/create', [DashboardHakCiptaController::class, 'create'])->name('create'); // PASTIKAN MENGGUNAKAN DashboardHakCiptaController
         Route::post('/', [DashboardHakCiptaController::class, 'store'])->name('store'); // PASTIKAN MENGGUNAKAN DashboardHakCiptaController
+        Route::get('/{id}', [DashboardHakCiptaController::class, 'show'])->name('show');
     });
 
     // Paten Dashboard Routes (placeholder)
     Route::prefix('paten')->name('paten.')->group(function () {
-        Route::get('/', function () { return view('dashboard.paten.index'); })->name('index');
-        Route::get('/create', function () { return view('dashboard.paten.create'); })->name('create');
-        // Route::post('/', [DashboardPatenController::class, 'store'])->name('store');
+        Route::get('/', [DashboardPatenController::class, 'index'])->name('index'); // Arahkan ke DashboardPatenController
+        Route::get('/create', [DashboardPatenController::class, 'create'])->name('create'); // Arahkan ke DashboardPatenController
+        Route::post('/', [DashboardPatenController::class, 'store'])->name('store'); // Tambahkan rute store
+        Route::get('/{id}', [DashboardPatenController::class, 'show'])->name('show'); // Tambahkan rute show untuk Paten
     });
 });

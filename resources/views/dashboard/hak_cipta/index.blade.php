@@ -69,7 +69,7 @@
                                                 </span>
                                             </td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
-                                                {{-- <a href="{{ route('dashboard.hak_cipta.show', $hakCipta->id) }}" class="text-[#68C5CC] hover:text-[#5bb3b8] hover:underline font-medium">Detail</a> --}}
+                                                <a href="{{ route('dashboard.hak_cipta.show', $hakCipta->id) }}" class="text-[#68C5CC] hover:text-[#5bb3b8] hover:underline font-medium">Detail</a>
                                             </td>
                                         </tr>
                                     @endforeach

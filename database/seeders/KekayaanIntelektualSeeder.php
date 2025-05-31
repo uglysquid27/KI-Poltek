@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\KekayaanIntelektual;
-use App\Models\HakCipta; // Pastikan model HakCipta yang baru diimport
-use App\Models\Paten; // Jika Anda masih menggunakan model Paten
+use App\Models\HakCipta;
+use App\Models\Paten; // Pastikan model Paten yang baru diimport
 use App\Models\User; // Untuk mendapatkan user_id
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\Hash;
@@ -35,13 +35,18 @@ class KekayaanIntelektualSeeder extends Seeder
             'Karya Fotografi', 'Karya Drama & Koreografi', 'Karya Rekaman', 'Karya Lainnya'
         ];
 
+        // Jenis Paten
+        $jenisPatenOptions = [
+            'Paten Biasa', 'Paten Sederhana'
+        ];
+
         // Status yang mungkin untuk Kekayaan Intelektual
         $statusOptions = [
             'Dalam Proses', 'Dibatalkan', 'Ditolak', 'Dihapus',
             'Didaftar', 'Ditarik kembali', 'Berakhir'
         ];
 
-        for ($i = 1; $i <= 50; $i++) {
+        for ($i = 1; $i <= 20; $i++) { // Mengurangi jumlah menjadi 20 untuk Paten dan Hak Cipta
             // Create a random type
             $type = $faker->randomElement(['hak_cipta', 'paten']);
 
@@ -55,7 +60,7 @@ class KekayaanIntelektualSeeder extends Seeder
                 'submission_date' => $faker->date(),
                 'publication_date' => $faker->optional()->date(),
                 'document' => $faker->optional()->word . '.pdf',
-                'user_id' => $user->user_id, // Menggunakan user_id dari user yang ada
+                'user_id' => $user->user_id,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
@@ -107,8 +112,8 @@ class KekayaanIntelektualSeeder extends Seeder
                     'pencipta_kecamatan' => $faker->city,
                     'pencipta_kodepos' => $faker->postcode,
                     'pencipta_jurusan' => $faker->randomElement(['Teknik Informatika', 'Manajemen Bisnis', 'Akuntansi', 'Teknik Elektro']),
-                    'anggota_mahasiswa' => $anggotaMahasiswa ? json_encode($anggotaMahasiswa) : null,
-                    'anggota_pencipta' => $anggotaPencipta ? json_encode($anggotaPencipta) : null,
+                    'anggota_mahasiswa' => $anggotaMahasiswa, // Akan di-cast ke JSON oleh model
+                    'anggota_pencipta' => $anggotaPencipta,   // Akan di-cast ke JSON oleh model
                     'file_path_ktp' => 'dummy_files/ktp_' . $faker->unique()->word() . '.pdf',
                     'kota_pengumuman' => $faker->city,
                     'tanggal_pengumuman' => $faker->date(),
@@ -118,20 +123,54 @@ class KekayaanIntelektualSeeder extends Seeder
                     'updated_at' => now(),
                 ];
 
-                // Uncomment the line below to debug the data being passed to HakCipta::create()
-                // dd([
-                //     'ki_id_from_ki' => $ki->ki_id,
-                //     'HakCipta_model_fillable' => (new HakCipta())->getFillable(),
-                //     'data_to_create' => $hakCiptaData
-                // ]);
-
                 HakCipta::create($hakCiptaData);
-            } else {
-                // Jika Anda memiliki model Paten yang sesuai dengan KekayaanIntelektual
+            } else { // Jika type === 'paten'
+                // Data Anggota Inventor (bisa kosong atau diisi)
+                $anggotaInventor = null;
+                if ($faker->boolean(50)) { // 50% kemungkinan ada anggota inventor
+                    $anggotaInventor = [];
+                    $numAnggota = $faker->numberBetween(1, 3);
+                    for ($j = 0; $j < $numAnggota; $j++) {
+                        $anggotaInventor[] = [
+                            'nama' => $faker->name,
+                            'alamat' => $faker->address,
+                            'email' => $faker->unique()->safeEmail,
+                            'hp' => $faker->phoneNumber,
+                        ];
+                    }
+                }
+
+                // Data Anggota Mahasiswa (bisa kosong atau diisi)
+                $anggotaMahasiswaPaten = null;
+                if ($faker->boolean(50)) { // 50% kemungkinan ada anggota mahasiswa untuk Paten
+                    $anggotaMahasiswaPaten = [];
+                    $numMahasiswaPaten = $faker->numberBetween(1, 2);
+                    for ($j = 0; $j < $numMahasiswaPaten; $j++) {
+                        $anggotaMahasiswaPaten[] = [
+                            'nama' => $faker->name,
+                            'nim' => $faker->unique()->numerify('##########'),
+                        ];
+                    }
+                }
+
                 Paten::create([
                     'ki_id' => $ki->ki_id,
-                    'paten_number' => 'P' . $faker->unique()->numberBetween(100000, 999999),
-                    'validity' => $faker->dateTimeBetween('now', '+10 years'),
+                    'user_id' => $user->user_id,
+                    'judul_paten' => $faker->sentence(rand(4, 8)),
+                    'abstrak' => $faker->paragraph(rand(4, 6)),
+                    'jumlah_klaim' => $faker->numberBetween(1, 10),
+                    'ketua_inventor_nama' => $faker->name,
+                    'ketua_inventor_alamat' => $faker->address,
+                    'ketua_inventor_email' => $faker->unique()->safeEmail,
+                    'ketua_inventor_hp' => $faker->phoneNumber,
+                    'ketua_inventor_jurusan' => $faker->randomElement(['Teknik Mesin', 'Teknik Kimia', 'Teknik Sipil', 'Teknologi Pangan']),
+                    'anggota_inventor' => $anggotaInventor, // Akan di-cast ke JSON oleh model
+                    'jenis_paten' => $faker->randomElement($jenisPatenOptions),
+                    'file_path_ktp' => 'dummy_files/ktp_paten_' . $faker->unique()->word() . '.pdf',
+                    'ada_anggota_mahasiswa' => $anggotaMahasiswaPaten ? 'Ya' : 'Tidak',
+                    'anggota_mahasiswa' => $anggotaMahasiswaPaten, // Akan di-cast ke JSON oleh model
+                    'tanggal_upload_draft' => $faker->date(),
+                    'file_path_draft' => 'dummy_files/draft_paten_' . $faker->unique()->word() . '.docx',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

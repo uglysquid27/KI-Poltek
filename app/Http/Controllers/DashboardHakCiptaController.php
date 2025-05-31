@@ -12,12 +12,6 @@ use Illuminate\Support\Facades\Storage; // Untuk link file
 
 class DashboardHakCiptaController extends Controller
 {
-     //DASHBOARD CONTROLLER
-   /**
-     * Menampilkan daftar entri Hak Cipta di dashboard dengan paginasi.
-     *
-     * @return \Illuminate\View\View
-     */
     public function index()
     {
         // Pastikan hanya pengguna terautentikasi yang bisa mengakses
@@ -32,9 +26,8 @@ class DashboardHakCiptaController extends Controller
 
         // Mengambil daftar Hak Cipta.
         // Jika Anda ingin hanya menampilkan Hak Cipta milik pengguna yang login,
-        // ubah menjadi: $hakCiptas = HakCipta::where('user_id', $authenticatedUser->user_id)->paginate(10);
-        // Eager load kekayaanIntelektual untuk mengakses judul dan status
-        $hakCiptas = HakCipta::with('kekayaanIntelektual')->paginate(10); // Mengambil 10 item per halaman
+        // ubah menjadi: $hakCiptas = HakCipta::where('user_id', $authenticatedUser->user_id)->with('kekayaanIntelektual')->paginate(10);
+        $hakCiptas = HakCipta::with('kekayaanIntelektual')->paginate(10);
 
         return view('dashboard.hak_cipta.index', compact('hakCiptas'));
     }
@@ -42,7 +35,7 @@ class DashboardHakCiptaController extends Controller
     /**
      * Menampilkan formulir untuk membuat entri Hak Cipta baru.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function create()
     {
@@ -104,24 +97,20 @@ class DashboardHakCiptaController extends Controller
             'anggota_pencipta.*.alamat' => 'required|string|max:500',
             'anggota_pencipta.*.kecamatan' => 'required|string|max:255',
             'anggota_pencipta.*.kodepos' => 'required|string|max:10',
-            'scan_ktp_pencipta' => 'nullable|file|mimes:pdf|max:2048',
+            'scan_ktp_pencipta' => 'required|file|mimes:pdf|max:2048', // Max 2MB
             'kota_pengumuman' => 'required|string|max:255',
             'tanggal_pengumuman' => 'required|date',
-            'dokumen_ciptaan' => 'nullable|file|mimes:pdf,docx|max:10240',
-            'pernyataan_setuju' => 'accepted',
+            'dokumen_ciptaan' => 'required|file|mimes:pdf,docx|max:10240', // Max 10MB
+            'pernyataan_setuju' => 'accepted', // Must be checked
         ]);
 
         $filePathKtp = null;
         $filePathCiptaan = null;
 
-        // Mengunggah file hanya jika ada
+        // Mengunggah file
         try {
-            if ($request->hasFile('scan_ktp_pencipta')) {
-                $filePathKtp = $request->file('scan_ktp_pencipta')->store('hak_cipta_ktp', 'public');
-            }
-            if ($request->hasFile('dokumen_ciptaan')) {
-                $filePathCiptaan = $request->file('dokumen_ciptaan')->store('hak_cipta_dokumen', 'public');
-            }
+            $filePathKtp = $request->file('scan_ktp_pencipta')->store('hak_cipta_ktp', 'public');
+            $filePathCiptaan = $request->file('dokumen_ciptaan')->store('hak_cipta_dokumen', 'public');
         } catch (\Exception $e) {
             Log::error('File upload failed for Hak Cipta: ' . $e->getMessage());
             return back()->with('error', 'Gagal mengunggah file. Silakan coba lagi.');
@@ -135,17 +124,17 @@ class DashboardHakCiptaController extends Controller
                 'description' => $validatedData['uraian_singkat_ciptaan'],
                 'category' => $validatedData['jenis_karya'],
                 'status' => 'Dalam Proses',
-                'submission_date' => now(),
+                'submission_date' => $validatedData['tanggal_pengumuman'],
                 'publication_date' => null,
-                'document' => $filePathCiptaan,
+                'document' => $filePathCiptaan, // Dokumen utama KI bisa jadi dokumen ciptaan
                 'user_id' => $authenticatedUser->user_id,
             ]);
         } catch (\Exception $e) {
-            Log::error('Failed to create KekayaanIntelektual entry: ' . $e->getMessage());
+            Log::error('Failed to create KekayaanIntelektual entry for Hak Cipta: ' . $e->getMessage());
             // Hapus file yang sudah terunggah jika pembuatan KI gagal
             if ($filePathKtp) Storage::disk('public')->delete($filePathKtp);
             if ($filePathCiptaan) Storage::disk('public')->delete($filePathCiptaan);
-            return back()->with('error', 'Gagal membuat entri Kekayaan Intelektual. Silakan coba lagi.');
+            return back()->with('error', 'Gagal membuat entri Kekayaan Intelektual untuk Hak Cipta. Silakan coba lagi.');
         }
         // --- Selesai pembuatan KekayaanIntelektual ---
 
@@ -164,17 +153,13 @@ class DashboardHakCiptaController extends Controller
             'pencipta_kecamatan' => $validatedData['pencipta_kecamatan'],
             'pencipta_kodepos' => $validatedData['pencipta_kodepos'],
             'pencipta_jurusan' => $validatedData['pencipta_jurusan'],
-            'anggota_mahasiswa' => ($validatedData['ada_anggota_mahasiswa'] === 'Ya' && isset($validatedData['anggota_mahasiswa']))
-                                   ? json_encode($validatedData['anggota_mahasiswa'])
-                                   : null,
-            'anggota_pencipta' => isset($validatedData['anggota_pencipta'])
-                                  ? json_encode($validatedData['anggota_pencipta'])
-                                  : null,
+            'anggota_mahasiswa' => $request->input('anggota_mahasiswa'), // Dibiarkan sebagai array, model akan meng-cast
+            'anggota_pencipta' => $request->input('anggota_pencipta'), // Dibiarkan sebagai array, model akan meng-cast
             'file_path_ktp' => $filePathKtp,
             'kota_pengumuman' => $validatedData['kota_pengumuman'],
             'tanggal_pengumuman' => $validatedData['tanggal_pengumuman'],
             'file_path_ciptaan' => $filePathCiptaan,
-            'pernyataan_setuju' => $request->has('pernyataan_setuju'),
+            'pernyataan_setuju' => $validatedData['pernyataan_setuju'],
         ];
 
         try {
@@ -183,11 +168,41 @@ class DashboardHakCiptaController extends Controller
             return redirect()->route('dashboard.hak_cipta.index')->with('success', 'Data Hak Cipta berhasil diunggah!');
         } catch (\Exception $e) {
             Log::error('Failed to store Hak Cipta data: ' . $e->getMessage(), $hakCiptaData);
-            // Hapus file dan entri KI jika penyimpanan HakCipta gagal
+            // Hapus file dan entri KI jika penyimpanan Hak Cipta gagal
             if ($filePathKtp) Storage::disk('public')->delete($filePathKtp);
             if ($filePathCiptaan) Storage::disk('public')->delete($filePathCiptaan);
-            $kekayaanIntelektual->delete();
+            $kekayaanIntelektual->delete(); // Hapus KI yang sudah dibuat
             return back()->with('error', 'Gagal menyimpan data Hak Cipta. Silakan coba lagi.');
         }
+    }
+
+    /**
+     * Menampilkan detail Hak Cipta yang ditentukan di dashboard.
+     *
+     * @param  int  $id ID dari record Hak Cipta.
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function show($id)
+    {
+        // Menggunakan logika autentikasi manual berbasis cookie
+        $token = request()->cookie('auth_token');
+        $authenticatedUser = null;
+        if ($token) {
+            $authenticatedUser = User::where('remember_token', $token)->first();
+        }
+        if (!$authenticatedUser) {
+            return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
+        }
+
+        // Eager load relasi yang diperlukan: kekayaanIntelektual
+        $hakCipta = HakCipta::with('kekayaanIntelektual')->find($id);
+
+        // Jika Hak Cipta tidak ditemukan, redirect atau tampilkan error
+        if (!$hakCipta) {
+            return redirect()->route('dashboard.hak_cipta.index')->with('error', 'Detail Hak Cipta tidak ditemukan.');
+        }
+
+        // Mengirim objek HakCipta ke view
+        return view('dashboard.hak_cipta.show', compact('hakCipta'));
     }
 }
