@@ -207,4 +207,94 @@ class DashboardPatenController extends Controller
         // Mengirim objek Paten ke view
         return view('dashboard.paten.show', compact('paten'));
     }
+
+    /**
+     * Menampilkan formulir untuk mengubah status Paten.
+     * Hanya admin yang dapat mengakses halaman ini.
+     *
+     * @param  int  $id ID dari record Paten.
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function editStatus($id)
+    {
+        // Menggunakan logika autentikasi manual berbasis cookie
+        $token = request()->cookie('auth_token');
+        $authenticatedUser = null;
+        if ($token) {
+            $authenticatedUser = User::where('remember_token', $token)->first();
+        }
+
+        // Pastikan pengguna terautentikasi dan memiliki peran admin (role = 1)
+        if (!$authenticatedUser || $authenticatedUser->role !== 1) {
+            return redirect()->route('dashboard.paten.index')->with('error', 'Anda tidak memiliki izin untuk mengubah status Paten.');
+        }
+
+        $paten = Paten::with('kekayaanIntelektual')->find($id);
+
+        if (!$paten) {
+            return redirect()->route('dashboard.paten.index')->with('error', 'Paten tidak ditemukan.');
+        }
+
+        $statusOptions = [
+            'Dalam Proses', 'Dibatalkan', 'Ditolak', 'Dihapus',
+            'Didaftar', 'Ditarik kembali', 'Berakhir'
+        ];
+
+        return view('dashboard.paten.edit_status', compact('paten', 'statusOptions'));
+    }
+
+    /**
+     * Memperbarui status Paten di database.
+     * Hanya admin yang dapat melakukan ini.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id ID dari record Paten.
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        // Menggunakan logika autentikasi manual berbasis cookie
+        $token = $request->cookie('auth_token');
+        $authenticatedUser = null;
+        if ($token) {
+            $authenticatedUser = User::where('remember_token', $token)->first();
+        }
+
+        // Pastikan pengguna terautentikasi dan memiliki peran admin (role = 1)
+        if (!$authenticatedUser || $authenticatedUser->role !== 1) {
+            Log::warning('Unauthorized attempt to update Paten status for ID: ' . $id);
+            return redirect()->route('dashboard.paten.index')->with('error', 'Anda tidak memiliki izin untuk mengubah status Paten.');
+        }
+
+        $validatedData = $request->validate([
+            'status' => 'required|string|in:Dalam Proses,Dibatalkan,Ditolak,Dihapus,Didaftar,Ditarik kembali,Berakhir',
+        ]);
+
+        $paten = Paten::with('kekayaanIntelektual')->find($id);
+
+        if (!$paten) {
+            return back()->with('error', 'Paten tidak ditemukan.');
+        }
+
+        try {
+            // Perbarui status di model KekayaanIntelektual yang terkait
+            if ($paten->kekayaanIntelektual) {
+                $paten->kekayaanIntelektual->status = $validatedData['status'];
+                // Jika status diubah menjadi 'Didaftar', set publication_date ke tanggal sekarang
+                if ($validatedData['status'] === 'Didaftar' && is_null($paten->kekayaanIntelektual->publication_date)) {
+                    $paten->kekayaanIntelektual->publication_date = now();
+                }
+                $paten->kekayaanIntelektual->save();
+            } else {
+                Log::error('KekayaanIntelektual record not found for Paten ID: ' . $id);
+                return back()->with('error', 'Gagal memperbarui status: Data Kekayaan Intelektual tidak ditemukan.');
+            }
+
+            Log::info('Paten status updated successfully for ID: ' . $id . ' to ' . $validatedData['status']);
+            return redirect()->route('dashboard.paten.show', $paten->id)->with('success', 'Status Paten berhasil diperbarui!');
+        } catch (\Exception $e) {
+            Log::error('Failed to update Paten status for ID: ' . $id . ' Error: ' . $e->getMessage());
+            return back()->with('error', 'Gagal memperbarui status Paten. Silakan coba lagi.');
+        }
+    }
 }

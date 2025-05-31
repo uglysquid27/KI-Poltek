@@ -49,6 +49,8 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/create', [DashboardHakCiptaController::class, 'create'])->name('create'); // PASTIKAN MENGGUNAKAN DashboardHakCiptaController
         Route::post('/', [DashboardHakCiptaController::class, 'store'])->name('store'); // PASTIKAN MENGGUNAKAN DashboardHakCiptaController
         Route::get('/{id}', [DashboardHakCiptaController::class, 'show'])->name('show');
+        Route::get('/{id}/edit-status', [DashboardHakCiptaController::class, 'editStatus'])->name('edit_status');
+        Route::put('/{id}/update-status', [DashboardHakCiptaController::class, 'updateStatus'])->name('update_status');
     });
 
     // Paten Dashboard Routes (placeholder)
@@ -57,5 +59,7 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/create', [DashboardPatenController::class, 'create'])->name('create'); // Arahkan ke DashboardPatenController
         Route::post('/', [DashboardPatenController::class, 'store'])->name('store'); // Tambahkan rute store
         Route::get('/{id}', [DashboardPatenController::class, 'show'])->name('show'); // Tambahkan rute show untuk Paten
+        Route::get('/{id}/edit-status', [DashboardPatenController::class, 'editStatus'])->name('edit_status');
+        Route::put('/{id}/update-status', [DashboardPatenController::class, 'updateStatus'])->name('update_status');
     });
 });

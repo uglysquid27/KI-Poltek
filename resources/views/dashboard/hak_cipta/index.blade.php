@@ -68,8 +68,11 @@
                                                     {{ $hakCipta->kekayaanIntelektual->status ?? 'N/A' }}
                                                 </span>
                                             </td>
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
+                                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800 flex items-center space-x-2">
                                                 <a href="{{ route('dashboard.hak_cipta.show', $hakCipta->id) }}" class="text-[#68C5CC] hover:text-[#5bb3b8] hover:underline font-medium">Detail</a>
+                                              
+                                                    <a href="{{ route('dashboard.hak_cipta.edit_status', $hakCipta->id) }}" class="text-blue-600 hover:text-blue-800 hover:underline font-medium ml-2">Ubah Status</a>
+
                                             </td>
                                         </tr>
                                     @endforeach

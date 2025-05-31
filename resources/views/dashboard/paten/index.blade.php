@@ -67,6 +67,7 @@
                                             </td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
                                                 <a href="{{ route('dashboard.paten.show', $paten->id) }}" class="text-[#68C5CC] hover:text-[#5bb3b8] hover:underline font-medium">Detail</a>
+                                                 <a href="{{ route('dashboard.paten.edit_status', $paten->id) }}" class="text-blue-600 hover:text-blue-800 hover:underline font-medium ml-2">Ubah Status</a>
                                             </td>
                                         </tr>
                                     @endforeach
