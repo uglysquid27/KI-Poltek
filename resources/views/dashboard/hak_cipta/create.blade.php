@@ -1,45 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 
 @section('title', 'Unggah Hak Cipta Sentra')
 
 @section('content')
-    <div class="min-h-screen flex flex-col pt-28">
-        {{-- Navbar --}}
-        <div class="navbar bg-[#ffffff] shadow-sm w-full z-50 fixed top-0">
-            <div class="flex-1 flex items-center m-2">
-                <a href="/" class="text-xl flex items-center space-x-2 ml-5">
-                    <img src="{{ asset('img/logo_polinema.png') }}" alt="Logo" class="h-13 w-auto">
-                    <span class="text-sm font-semibold text-gray-700" style="font-family: 'Montserrat', sans-serif;">
-                        Kekayaan Intelektual Politeknik Negeri Malang
-                    </span>
-                </a>
-            </div>
-            <div class="flex-none flex items-center space-x-5 mr-5">
-                <a class="text-gray-700 hover:text-gray-900 transition duration-200">Penelurusan</a>
-                <a class="text-gray-700 hover:text-gray-900 transition duration-200">Total</a>
-                <a class="text-gray-700 hover:text-gray-900 transition duration-200">Panduan</a>
-                @php
-                    // Manual authentication check for Blade
-                    $authenticatedUser = null;
-                    $token = request()->cookie('auth_token');
-                    if ($token) {
-                        $authenticatedUser = \App\Models\User::where('remember_token', $token)->first();
-                    }
-                @endphp
-                @if($authenticatedUser)
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="px-5 py-2 text-white bg-red-500 hover:bg-red-600 transition duration-200 cursor-pointer rounded-full font-semibold shadow-md">
-                            Logout
-                        </button>
-                    </form>
-                @else
-                    <a href="{{ route('login') }}" class="px-5 py-2 text-white bg-[#68C5CC] hover:bg-[#5bb3b8] transition duration-200 cursor-pointer rounded-full font-semibold shadow-md">
-                        Login
-                    </a>
-                @endif
-            </div>
-        </div>
+    <div class="min-h-screen flex flex-col ">
 
         <div class="flex-grow flex flex-col md:flex-row p-6 bg-gray-100">
             {{-- Include the sidebar from its new layout location --}}
