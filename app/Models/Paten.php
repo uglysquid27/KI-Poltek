@@ -54,6 +54,27 @@ class Paten extends Model
         return $this->belongsTo(KekayaanIntelektual::class, 'ki_id', 'ki_id');
     }
 
+      public function pemegangs()
+    {
+        return $this->hasMany(Pemegang::class, 'paten_id');
+    }
+
+    public function penciptas()
+    {
+        return $this->hasMany(Pencipta::class, 'paten_id');
+    }
+
+    public function konsultans()
+    {
+        return $this->hasMany(Konsultan::class, 'paten_id');
+    }
+
+     public function inventors()
+    {
+        return $this->hasMany(Inventor::class, 'paten_id');
+    }
+
+ 
     /**
      * Get the User that owns the Paten.
      */
