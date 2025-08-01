@@ -12,8 +12,7 @@
         public function up(): void
         {
             Schema::create('hak_ciptas', function (Blueprint $table) {
-                $table->id(); // Primary Key default 'id' for hak_ciptas table
-                // Tambahkan ki_id sebagai foreign key ke kekayaan_intelektuals
+                $table->id();
                 $table->unsignedBigInteger('ki_id');
                 $table->foreign('ki_id')->references('ki_id')->on('kekayaan_intelektuals')->onDelete('cascade');
 
@@ -22,7 +21,7 @@
                 // Data Karya
                 $table->string('judul_karya');
                 $table->text('uraian_singkat_ciptaan');
-                $table->string('jenis_karya'); // Karya Tulis, Karya Seni, etc.
+                $table->string('jenis_karya');
 
                 // Data Pencipta Utama
                 $table->string('pencipta_nik');
@@ -35,21 +34,21 @@
                 $table->string('pencipta_jurusan');
 
                 // Anggota Berstatus Mahasiswa (disimpan sebagai JSON)
-                $table->json('anggota_mahasiswa')->nullable(); // Array of objects: [{nama: "", nim: ""}]
+                $table->json('anggota_mahasiswa')->nullable(); 
 
                 // Anggota Pencipta Lain (disimpan sebagai JSON)
-                $table->json('anggota_pencipta')->nullable(); // Array of objects: [{nik: "", nama: "", email: "", hp: "", alamat: "", kecamatan: "", kodepos: ""}]
+                $table->json('anggota_pencipta')->nullable(); 
 
                 // Dokumen Unggahan
-                $table->string('file_path_ktp'); // Path to Scan KTP Pencipta PDF
+                $table->string('file_path_ktp'); 
                 $table->string('kota_pengumuman');
-                $table->date('tanggal_pengumuman'); // Date format (Bulan, Hari, Tahun)
-                $table->string('file_path_ciptaan'); // Path to Dokumen Ciptaan (PDF/DOCX)
+                $table->date('tanggal_pengumuman'); 
+                $table->string('file_path_ciptaan'); 
 
                 // Pernyataan
                 $table->boolean('pernyataan_setuju')->default(false);
 
-                $table->timestamps(); // created_at & updated_at
+                $table->timestamps(); 
             });
         }
 
