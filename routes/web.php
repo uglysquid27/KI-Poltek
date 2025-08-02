@@ -8,6 +8,7 @@ use App\Http\Controllers\HakCiptaController as PublicHakCiptaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DashboardHakCiptaController;
+use App\Http\Controllers\DashboardDesainIndustriController;
 use App\Http\Controllers\DashboardPatenController;
 
 
@@ -40,6 +41,15 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
         Route::get('/{id}', [DashboardHakCiptaController::class, 'show'])->name('show');
         Route::get('/{id}/edit-status', [DashboardHakCiptaController::class, 'editStatus'])->name('edit_status');
         Route::put('/{id}/update-status', [DashboardHakCiptaController::class, 'updateStatus'])->name('update_status');
+    });
+
+      Route::prefix('desain-industri')->name('desain_industri.')->group(function () {
+        Route::get('/', [DashboardDesainIndustriController::class, 'index'])->name('index');
+        Route::get('/create', [DashboardDesainIndustriController::class, 'create'])->name('create');
+        Route::post('/', [DashboardDesainIndustriController::class, 'store'])->name('store');
+        Route::get('/{id}', [DashboardDesainIndustriController::class, 'show'])->name('show');
+        Route::get('/{id}/edit-status', [DashboardDesainIndustriController::class, 'editStatus'])->name('edit_status');
+        Route::put('/{id}/update-status', [DashboardDesainIndustriController::class, 'updateStatus'])->name('update_status');
     });
 
     // Paten Dashboard Routes

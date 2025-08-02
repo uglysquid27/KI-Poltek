@@ -1,20 +1,20 @@
-<div class="flex h-screen w-16 flex-col justify-between border-e border-gray-100 bg-white sticky top-0 self-start"> {{-- Re-added h-screen --}}
+<div class="top-0 sticky flex flex-col justify-between self-start bg-white border-e border-gray-100 w-16 h-screen"> {{-- Re-added h-screen --}}
   <div>
-    <div class="inline-flex size-16 items-center justify-center">
+    <div class="inline-flex justify-center items-center size-16">
       {{-- Replaced "KI" text with the Polinema logo image --}}
-      <img src="{{ asset('img/logo_polinema.png') }}" alt="Logo Polinema" class="h-10 w-auto rounded-lg">
+      <img src="{{ asset('img/logo_polinema.png') }}" alt="Logo Polinema" class="rounded-lg w-auto h-10">
     </div>
 
-    <div class="border-t border-gray-100">
+    <div class="border-gray-100 border-t">
       <div class="px-2">
         <div class="py-4">
           <a
             href="{{ route('dashboard.dashboard') }}"
-            class="group relative flex justify-center rounded-sm bg-blue-50 px-2 py-1.5 text-blue-700"
+            class="group relative flex justify-center bg-blue-50 px-2 py-1.5 rounded-sm text-blue-700"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="size-5 opacity-75"
+              class="opacity-75 size-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -33,22 +33,22 @@
             </svg>
 
             <span
-              class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+              class="invisible group-hover:visible top-1/2 absolute bg-gray-900 ms-4 px-2 py-1.5 rounded-sm font-medium text-white text-xs -translate-y-1/2 start-full"
             >
               Overview
             </span>
           </a>
         </div>
 
-        <ul class="space-y-1 border-t border-gray-100 pt-4">
+        <ul class="space-y-1 pt-4 border-gray-100 border-t">
           <li>
             <a
               href="#" {{-- Placeholder for My Applications --}}
-              class="group relative flex justify-center rounded-sm px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+              class="group relative flex justify-center hover:bg-gray-50 px-2 py-1.5 rounded-sm text-gray-500 hover:text-gray-700"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="size-5 opacity-75"
+                class="opacity-75 size-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -62,7 +62,7 @@
               </svg>
 
               <span
-                class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+                class="invisible group-hover:visible top-1/2 absolute bg-gray-900 ms-4 px-2 py-1.5 rounded-sm font-medium text-white text-xs -translate-y-1/2 start-full"
               >
                 My Applications
               </span>
@@ -72,11 +72,11 @@
           <li>
             <a
               href="#" {{-- Placeholder for Settings --}}
-              class="group relative flex justify-center rounded-sm px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+              class="group relative flex justify-center hover:bg-gray-50 px-2 py-1.5 rounded-sm text-gray-500 hover:text-gray-700"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="size-5 opacity-75"
+                class="opacity-75 size-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -90,7 +90,7 @@
               </svg>
 
               <span
-                class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+                class="invisible group-hover:visible top-1/2 absolute bg-gray-900 ms-4 px-2 py-1.5 rounded-sm font-medium text-white text-xs -translate-y-1/2 start-full"
               >
                 Settings
               </span>
@@ -100,11 +100,11 @@
           <li>
             <a
               href="#" {{-- Placeholder for Reports --}}
-              class="group relative flex justify-center rounded-sm px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+              class="group relative flex justify-center hover:bg-gray-50 px-2 py-1.5 rounded-sm text-gray-500 hover:text-gray-700"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="size-5 opacity-75"
+                class="opacity-75 size-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -118,7 +118,7 @@
               </svg>
 
               <span
-                class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+                class="invisible group-hover:visible top-1/2 absolute bg-gray-900 ms-4 px-2 py-1.5 rounded-sm font-medium text-white text-xs -translate-y-1/2 start-full"
               >
                 Reports
               </span>
@@ -129,13 +129,13 @@
           <li>
             <a
               href="{{ route('dashboard.hak_cipta.index') }}"
-              class="group relative flex justify-center rounded-sm px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+              class="group relative flex justify-center hover:bg-gray-50 px-2 py-1.5 rounded-sm text-gray-500 hover:text-gray-700"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 opacity-75">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="opacity-75 size-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
               <span
-                class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+                class="invisible group-hover:visible top-1/2 absolute bg-gray-900 ms-4 px-2 py-1.5 rounded-sm font-medium text-white text-xs -translate-y-1/2 start-full"
               >
                 Unggah Hak Cipta
               </span>
@@ -146,15 +146,30 @@
           <li>
             <a
               href="{{ route('dashboard.paten.index') }}"
-              class="group relative flex justify-center rounded-sm px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+              class="group relative flex justify-center hover:bg-gray-50 px-2 py-1.5 rounded-sm text-gray-500 hover:text-gray-700"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-5 opacity-75">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="opacity-75 size-5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
               <span
-                class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+                class="invisible group-hover:visible top-1/2 absolute bg-gray-900 ms-4 px-2 py-1.5 rounded-sm font-medium text-white text-xs -translate-y-1/2 start-full"
               >
                 Unggah Paten
+              </span>
+            </a>
+          </li>
+          <li>
+            <a
+              href="{{ route('dashboard.desain_industri.index') }}"
+              class="group relative flex justify-center hover:bg-gray-50 px-2 py-1.5 rounded-sm text-gray-500 hover:text-gray-700"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="opacity-75 size-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              <span
+                class="invisible group-hover:visible top-1/2 absolute bg-gray-900 ms-4 px-2 py-1.5 rounded-sm font-medium text-white text-xs -translate-y-1/2 start-full"
+              >
+                Unggah Desain Industri
               </span>
             </a>
           </li>
@@ -163,14 +178,14 @@
     </div>
   </div>
 
-  <div class="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-white p-2">
+  <div class="bottom-0 sticky inset-x-0 bg-white p-2 border-gray-100 border-t">
     <a
       href="{{ route('logout') }}" {{-- Assuming logout is a POST route, you'll need a form for this --}}
-      class="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+      class="group relative flex justify-center hover:bg-gray-50 px-2 py-1.5 rounded-lg w-full text-gray-500 hover:text-gray-700 text-sm"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="size-5 opacity-75"
+        class="opacity-75 size-5"
         fill="none"
         viewBox="0 0 24 24"
         stroke="currentColor"
@@ -184,7 +199,7 @@
       </svg>
 
       <span
-        class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded-sm bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible"
+        class="invisible group-hover:visible top-1/2 absolute bg-gray-900 ms-4 px-2 py-1.5 rounded-sm font-medium text-white text-xs -translate-y-1/2 start-full"
       >
         Logout
       </span>
