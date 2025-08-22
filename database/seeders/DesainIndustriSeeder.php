@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\DesainIndustri;
 use App\Models\KekayaanIntelektual;
+use App\Models\DesainIndustri;
 use App\Models\User;
-use Faker\Factory as Faker;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class DesainIndustriSeeder extends Seeder
 {
@@ -17,125 +17,121 @@ class DesainIndustriSeeder extends Seeder
      */
     public function run(): void
     {
-        $faker = Faker::create('id_ID');
+        // First, make sure the enum type includes 'desain_industri'
+        $this->checkEnumType();
 
-        // Ensure at least one user exists
-        $user = User::first();
+        // Create or get a test user - using user_id as primary key
+        $user = User::where('email', 'desain@example.com')->first();
+        
         if (!$user) {
             $user = User::create([
-                'name' => 'Dummy User',
-                'email' => 'dummy@example.com',
-                'password' => Hash::make('password'),
+                // 'user_id' => User::max('user_id') + 1, // Assuming user_id is auto-increment
+                'name' => 'Pendesain User',
+                'email' => 'desain@example.com',
+                'password' => Hash::make('password123'),
                 'role' => 0,
-                'remember_token' => Str::random(10),
+                'remember_token' => null,
             ]);
         }
 
-        $klaimOptions = [
-            ['bentuk'],
-            ['konfigurasi'],
-            ['komposisi_garis_warna'],
-            ['bentuk', 'konfigurasi'],
-            ['bentuk', 'komposisi_garis_warna'],
-            ['konfigurasi', 'komposisi_garis_warna'],
-            ['bentuk', 'konfigurasi', 'komposisi_garis_warna']
-        ];
+        // Create Kekayaan Intelektual record
+        $ki = KekayaanIntelektual::create([
+            'type' => 'desain_industri',
+            'title' => 'Botol Minuman Ergonomis',
+            'description' => 'Botol minuman dengan desain ergonomis untuk genggaman yang nyaman',
+            'category' => 'Desain Industri',
+            'status' => 'Dalam Proses',
+            'submission_date' => now(),
+            'publication_date' => null,
+            'document' => 'desain_industri/gambar/sample_botol.jpg',
+            // 'user_id' => $user->user_id, // Use user_id instead of id
+        ]);
 
-        $kegunaanExamples = [
-            'Sebagai kemasan minuman berkarbonasi',
-            'Sebagai wadah penyimpanan makanan',
-            'Sebagai perangkat elektronik portable',
-            'Sebagai furnitur ruang tamu',
-            'Sebagai alat transportasi personal',
-            'Sebagai peralatan dapur',
-            'Sebagai kemasan produk kosmetik'
-        ];
+        // Create Desain Industri record
+        DesainIndustri::create([
+            'ki_id' => $ki->ki_id,
+            // 'user_id' => $user->user_id, // Use user_id instead of id
+            
+            // Data Desain Industri
+            'judul_desain' => 'Botol Minuman Ergonomis',
+            'kegunaan' => 'Sebagai kemasan minuman dengan desain ergonomis untuk kenyamanan pengguna',
+            'klaim_desain' => json_encode(['bentuk', 'konfigurasi']),
+            'uraian_klaim' => 'Desain kontur botol yang ergonomis dan konfigurasi grip yang nyaman',
+            
+            // Data Pemohon
+            'pemohon_nama' => 'PT. Inovasi Desain Indonesia',
+            'pemohon_jenis' => 'badan_hukum',
+            'pemohon_kewarganegaraan' => 'Indonesia',
+            'pemohon_badan_hukum' => 'PT. Inovasi Desain Indonesia',
+            'pemohon_alamat' => 'Jl. Raya Teknologi No. 123',
+            'pemohon_rt_rw' => '001/002',
+            'pemohon_kelurahan' => 'Teknopolis',
+            'pemohon_kecamatan' => 'Digital District',
+            'pemohon_kota_kabupaten' => 'Jakarta Selatan',
+            'pemohon_kodepos' => '12345',
+            'pemohon_provinsi' => 'DKI Jakarta',
+            
+            // Data Pendesain
+            'pendesain_nama' => 'Budi Santoso',
+            'pendesain_kewarganegaraan' => 'Indonesia',
+            'pendesain_alamat' => 'Jl. Desain Kreatif No. 45',
+            'pendesain_rt_rw' => '003/004',
+            'pendesain_kelurahan' => 'Kreativitas',
+            'pendesain_kecamatan' => 'Innovation Area',
+            'pendesain_kota_kabupaten' => 'Bandung',
+            'pendesain_kodepos' => '40123',
+            'pendesain_provinsi' => 'Jawa Barat',
+            
+            // Additional designers
+            'anggota_pendesain' => json_encode([
+                [
+                    'nama' => 'Siti Rahayu',
+                    'kewarganegaraan' => 'Indonesia',
+                    'alamat' => 'Jl. Inovasi No. 67',
+                    'rt_rw' => '005/006',
+                    'kelurahan' => 'Kreatif',
+                    'kecamatan' => 'Design Center',
+                    'kota_kabupaten' => 'Bandung',
+                    'kodepos' => '40124',
+                    'provinsi' => 'Jawa Barat'
+                ]
+            ]),
+            
+            // File paths
+            'file_path_gambar_desain' => 'desain_industri/gambar/botol_ergonomis.jpg',
+            'keterangan_gambar' => json_encode(['Gambar tampak depan', 'Gambar tampak samping', 'Gambar 3D']),
+            'file_path_surat_pernyataan_kepemilikan' => 'desain_industri/surat/pernyataan_kepemilikan.pdf',
+            'file_path_surat_pengalihan_hak' => 'desain_industri/surat/pengalihan_hak.pdf',
+            'file_path_ktp_pendesain' => 'desain_industri/ktp/ktp_budi.pdf',
+            'file_path_akta_badan_hukum' => 'desain_industri/akta/akta_pt.pdf',
+            
+            // Pernyataan
+            'pernyataan_kebaruan' => true,
+            'pernyataan_tidak_sengketa' => true,
+            'pernyataan_pengalihan_hak' => true,
+        ]);
 
-        for ($i = 0; $i < 5; $i++) {
-            // Create KekayaanIntelektual entry
-            $ki = KekayaanIntelektual::create([
-                'type' => 'desain_industri',
-                'title' => 'Desain Industri: ' . $faker->word,
-                'description' => $faker->paragraph,
-                'category' => $faker->randomElement(['Produk', 'Kemasan', 'Furnitur', 'Elektronik']),
-                'status' => $faker->randomElement(['Dalam Proses', 'Didaftar', 'Ditolak']),
-                'submission_date' => $faker->date(),
-                'publication_date' => $faker->optional()->date(),
-                'document' => $faker->optional()->word . '.pdf',
-                'user_id' => $user->user_id,
-            ]);
+        $this->command->info('Desain Industri data seeded successfully!');
+        $this->command->info('Sample user: desain@example.com / password123');
+    }
 
-            // Create additional designers (0-2)
-            $anggotaPendesain = null;
-            if ($faker->boolean(50)) {
-                $anggotaPendesain = [];
-                $numAnggota = $faker->numberBetween(1, 2);
-                for ($j = 0; $j < $numAnggota; $j++) {
-                    $anggotaPendesain[] = [
-                        'nama' => $faker->name,
-                        'kewarganegaraan' => 'Indonesia',
-                        'alamat' => $faker->address,
-                        'rt_rw' => $faker->numerify('##/##'),
-                        'kelurahan' => $faker->citySuffix,
-                        'kecamatan' => $faker->city,
-                        'kota_kabupaten' => $faker->city,
-                        'kodepos' => $faker->postcode,
-                        'provinsi' => $faker->state,
-                    ];
-                }
+    /**
+     * Check and update the enum type if needed
+     */
+    private function checkEnumType(): void
+    {
+        $enumValues = DB::select("SHOW COLUMNS FROM kekayaan_intelektuals WHERE Field = 'type'");
+        
+        if (!empty($enumValues)) {
+            $enumDefinition = $enumValues[0]->Type;
+            if (strpos($enumDefinition, 'desain_industri') === false) {
+                DB::statement("ALTER TABLE kekayaan_intelektuals MODIFY COLUMN type ENUM('hak_cipta', 'paten', 'desain_industri') NOT NULL");
+                $this->command->info('Updated enum type to include desain_industri');
             }
-
-            // Create image descriptions
-            $keteranganGambar = [
-                'Gambar 1' => 'Tampak Depan',
-                'Gambar 2' => 'Tampak Belakang',
-                'Gambar 3' => 'Tampak Samping Kanan',
-                'Gambar 4' => 'Tampak Samping Kiri',
-                'Gambar 5' => 'Tampak Atas',
-                'Gambar 6' => 'Perspektif'
-            ];
-
-            // Create the industrial design record
-            DesainIndustri::create([
-                'ki_id' => $ki->ki_id,
-                'user_id' => $user->user_id,
-                'judul_desain' => $faker->randomElement(['Botol', 'Meja', 'Kursi', 'Lampu', 'Kemasan', 'Perhiasan', 'Alat Musik']),
-                'kegunaan' => $faker->randomElement($kegunaanExamples),
-                'klaim_desain' => json_encode($faker->randomElement($klaimOptions)),
-                'uraian_klaim' => $faker->paragraph,
-                'pemohon_nama' => $faker->randomElement([$faker->name, 'Politeknik Negeri Malang']),
-                'pemohon_jenis' => $faker->randomElement(['perorangan', 'badan_hukum']),
-                'pemohon_kewarganegaraan' => 'Indonesia',
-                'pemohon_badan_hukum' => $faker->optional()->company,
-                'pemohon_alamat' => $faker->address,
-                'pemohon_rt_rw' => $faker->numerify('##/##'),
-                'pemohon_kelurahan' => $faker->citySuffix,
-                'pemohon_kecamatan' => $faker->city,
-                'pemohon_kota_kabupaten' => $faker->city,
-                'pemohon_kodepos' => $faker->postcode,
-                'pemohon_provinsi' => $faker->state,
-                'pendesain_nama' => $faker->name,
-                'pendesain_kewarganegaraan' => 'Indonesia',
-                'pendesain_alamat' => $faker->address,
-                'pendesain_rt_rw' => $faker->numerify('##/##'),
-                'pendesain_kelurahan' => $faker->citySuffix,
-                'pendesain_kecamatan' => $faker->city,
-                'pendesain_kota_kabupaten' => $faker->city,
-                'pendesain_kodepos' => $faker->postcode,
-                'pendesain_provinsi' => $faker->state,
-                'anggota_pendesain' => $anggotaPendesain ? json_encode($anggotaPendesain) : null,
-                'file_path_gambar_desain' => 'dummy_files/desain_' . $faker->unique()->word . '.pdf',
-                'keterangan_gambar' => json_encode($keteranganGambar),
-                'file_path_surat_pernyataan_kepemilikan' => 'dummy_files/pernyataan_' . $faker->unique()->word . '.pdf',
-                'file_path_surat_pengalihan_hak' => $faker->optional()->passthrough('dummy_files/pengalihan_' . $faker->unique()->word . '.pdf'),
-                'file_path_ktp_pendesain' => 'dummy_files/ktp_' . $faker->unique()->word . '.pdf',
-                'file_path_akta_badan_hukum' => $faker->optional()->passthrough('dummy_files/akta_' . $faker->unique()->word . '.pdf'),
-                'pernyataan_kebaruan' => true,
-                'pernyataan_tidak_sengketa' => true,
-                'pernyataan_pengalihan_hak' => $faker->boolean(30),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
         }
     }
+    // In your DesainIndustri model
+protected $casts = [
+    'klaim_desain' => 'array',
+];
 }

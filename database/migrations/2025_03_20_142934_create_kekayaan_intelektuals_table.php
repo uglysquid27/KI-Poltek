@@ -25,7 +25,7 @@ return new class extends Migration {
             $table->date('submission_date');
             $table->date('publication_date')->nullable();
             $table->string('document')->nullable();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });
     }

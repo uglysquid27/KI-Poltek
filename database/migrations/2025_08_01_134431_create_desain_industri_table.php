@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('ki_id');
             $table->foreign('ki_id')->references('ki_id')->on('kekayaan_intelektuals')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade');
+            // $table->foreignId('user_id')->nullable();
 
             // Data Desain Industri
             $table->string('judul_desain');
@@ -38,7 +38,7 @@ return new class extends Migration
 
             // Data Pendesain (Designer)
             $table->string('pendesain_nama');
-            $table->string('pendesain_kewarganegaraan');
+            $table->string('pendesain_kewarganegaraan')->nullable(); ;
             $table->text('pendesain_alamat');
             $table->string('pendesain_rt_rw');
             $table->string('pendesain_kelurahan');
@@ -52,7 +52,7 @@ return new class extends Migration
 
             // Dokumen Unggahan
             $table->string('file_path_gambar_desain');
-            $table->json('keterangan_gambar'); 
+            $table->json('keterangan_gambar')->nullable(); 
             $table->string('file_path_surat_pernyataan_kepemilikan');
             $table->string('file_path_surat_pengalihan_hak')->nullable();
             $table->string('file_path_ktp_pendesain');

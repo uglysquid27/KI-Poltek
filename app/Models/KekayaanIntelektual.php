@@ -27,4 +27,9 @@ class KekayaanIntelektual extends Model
     {
         return $this->hasOne(Paten::class, 'ki_id');
     }
+
+    public function DesainIndustri()
+    {
+        return $this->hasOne(DesainIndustri::class, 'ki_id');
+    }
 }

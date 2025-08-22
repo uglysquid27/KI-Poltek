@@ -48,8 +48,8 @@
                                         <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
                                             <td class="px-4 py-3 font-medium text-gray-900 text-sm whitespace-nowrap">{{ $desain->id }}</td>
                                             <td class="px-4 py-3 text-gray-800 text-sm whitespace-nowrap">{{ Str::limit($desain->judul_desain, 50) }}</td>
-                                            <td class="px-4 py-3 text-gray-800 text-sm whitespace-nowrap">
-                                                {{ implode(', ', json_decode($desain->klaim_desain, true)) }}
+                                           <td class="px-4 py-3 text-gray-800 text-sm whitespace-nowrap">
+                                                {{ is_array($desain->klaim_desain) ? implode(', ', $desain->klaim_desain) : implode(', ', json_decode($desain->klaim_desain, true)) }}
                                             </td>
                                             <td class="px-4 py-3 text-gray-800 text-sm whitespace-nowrap">{{ $desain->pendesain_nama }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap">
