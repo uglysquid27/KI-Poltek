@@ -7,10 +7,11 @@ use App\Models\User; // Import your User model
 use App\Models\HakCipta; // Import HakCipta model
 use App\Models\KekayaanIntelektual;
 use App\Models\Paten; // Import Paten model
+use App\Models\DesainIndustri; // Import Paten model
 
 class DashboardController extends Controller
 {
-    /**
+      /**
      * Display the application dashboard with real data.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -33,23 +34,22 @@ class DashboardController extends Controller
             return redirect()->route('login')->with('error', 'You must log in to access the dashboard.');
         }
 
-        // Fetch real data for Hak Cipta and Paten
-        // Eager load kekayaanIntelektual for related data
-        $hakCiptas = HakCipta::with('kekayaanIntelektual')->paginate(5, ['*'], 'hakCiptaPage'); // 5 items per page, custom page name
-        $patens = Paten::with('kekayaanIntelektual')->paginate(5, ['*'], 'patenPage'); // 5 items per page, custom page name
+        // Fetch real data for Hak Cipta, Paten, and Desain Industri
+        $hakCiptas = HakCipta::with('kekayaanIntelektual')->paginate(5, ['*'], 'hakCiptaPage');
+        $patens = Paten::with('kekayaanIntelektual')->paginate(5, ['*'], 'patenPage');
+        $desainIndustris = DesainIndustri::with('kekayaanIntelektual')->paginate(5, ['*'], 'desainIndustriPage'); // Add this line
 
-        // Calculate counts for dashboard cards (can be optimized with direct DB counts)
-        $totalApplications = HakCipta::count() + Paten::count();
-        // For pending/approved, you might need to query the KekayaanIntelektual table directly
+        // Calculate counts for dashboard cards (include Desain Industri)
+        $totalApplications = HakCipta::count() + Paten::count() + DesainIndustri::count();
         $pendingApprovals = KekayaanIntelektual::where('status', 'Dalam Proses')->count();
         $approvedApplications = KekayaanIntelektual::where('status', 'Didaftar')->count();
 
-
-        // Dummy data for recent activities (can be replaced with real data later)
+        // Dummy data for recent activities
         $recentActivities = [
             ['description' => 'Aplikasi "Software Baru" diajukan.', 'time' => '2 jam yang lalu'],
             ['description' => 'Paten "Perangkat Cerdas" disetujui.', 'time' => 'Kemarin'],
             ['description' => 'Hak Cipta "Koleksi Seni Digital" ditinjau.', 'time' => '3 hari yang lalu'],
+            ['description' => 'Desain Industri "Model Produk Baru" diajukan.', 'time' => '5 hari yang lalu'], // Add sample activity
         ];
 
         // Pass all data to the dashboard view
@@ -58,9 +58,10 @@ class DashboardController extends Controller
             'pendingApprovals',
             'approvedApplications',
             'recentActivities',
-            'authenticatedUser', // Pass authenticated user for display if needed
-            'hakCiptas', // Pass Hak Cipta data
-            'patens' // Pass Paten data
+            'authenticatedUser',
+            'hakCiptas',
+            'patens',
+            'desainIndustris' // Add this variable
         ));
     }
 }

@@ -180,6 +180,70 @@
                     @endif
                 </div>
 
+                <!-- Desain Industri -->
+                 {{-- Add this section after the Paten Data Table --}}
+
+{{-- Desain Industri Data Table --}}
+<div class="mt-8 bg-white p-6 rounded-lg shadow-md mb-8">
+    <h2 class="text-xl font-bold text-gray-700 mb-4">Daftar Desain Industri</h2>
+    <div class="flex justify-end mb-4">
+        <a href="{{ route('dashboard.desain_industri.create') }}" class="px-4 py-2 text-white bg-[#68C5CC] hover:bg-[#5bb3b8] transition duration-200 cursor-pointer rounded-full font-semibold text-sm shadow-md">
+            + Unggah Desain Industri Baru
+        </a>
+    </div>
+    @if($desainIndustris->isEmpty())
+        <p class="text-gray-700 text-center py-8 text-lg">Belum ada data Desain Industri yang diunggah.</p>
+    @else
+        <div class="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul Desain</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Klaim</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Pendesain Utama</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status KI</th>
+                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach($desainIndustris as $desain)
+                        <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $desain->id }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ Str::limit($desain->judul_desain, 50) }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
+                                {{ is_array($desain->klaim_desain) ? implode(', ', $desain->klaim_desain) : implode(', ', json_decode($desain->klaim_desain, true)) }}
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ $desain->pendesain_nama }}</td>
+                            <td class="px-4 py-3 whitespace-nowrap">
+                                <span class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold
+                                    @if(isset($desain->kekayaanIntelektual->status))
+                                        @if($desain->kekayaanIntelektual->status == 'Didaftar') bg-green-100 text-green-800 border-green-300
+                                        @elseif($desain->kekayaanIntelektual->status == 'Dalam Proses') bg-blue-100 text-blue-800 border-blue-300
+                                        @elseif($desain->kekayaanIntelektual->status == 'Ditolak') bg-red-100 text-red-800 border-red-300
+                                        @else bg-gray-100 text-gray-800 border-gray-300 @endif
+                                    @else
+                                        bg-gray-100 text-gray-800 border-gray-300
+                                    @endif">
+                                    {{ $desain->kekayaanIntelektual->status ?? 'N/A' }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
+                                {{-- Uncomment these when you have the routes implemented --}}
+                                {{-- <a href="{{ route('dashboard.desain_industri.show', $desain->id) }}" class="text-[#68C5CC] hover:text-[#5bb3b8] hover:underline font-medium">Detail</a> --}}
+                                {{-- <a href="{{ route('dashboard.desain_industri.edit_status', $desain->id) }}" class="ml-2 text-blue-600 hover:text-blue-800 hover:underline font-medium">Ubah Status</a> --}}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-6">
+            {{ $desainIndustris->links('pagination::tailwind') }}
+        </div>
+    @endif
+</div>
+
             </div>
         </div>
     </div>

@@ -225,71 +225,200 @@
                         <div id="anggota_pendesain_container" class="space-y-6">
                             @if(old('anggota_pendesain'))
                                 @foreach(old('anggota_pendesain') as $index => $anggota)
-                                    <div class="relative space-y-4 p-4 border border-gray-300 rounded-lg anggota-pendesain-item">
-                                        <h4 class="font-semibold text-gray-700 text-md">Anggota Pendesain #{{ $index + 1 }}</h4>
-                                        <button type="button" class="top-2 right-2 absolute text-red-500 hover:text-red-700 transition duration-200 remove-anggota-pendesain-btn">
+                                    <div class="anggota-pendesain-item space-y-4 border border-gray-300 p-4 rounded-lg relative">
+                                        <h4 class="text-md font-semibold text-gray-700">Anggota Pendesain #{{ $index + 1 }}</h4>
+                                        <button type="button" class="remove-anggota-pendesain-btn absolute top-2 right-2 text-red-500 hover:text-red-700 transition duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
                                         </button>
                                         <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
                                             <div>
-                                                <label for="anggota_nama_{{ $index }}" class="block mb-1 font-medium text-gray-600 text-sm">Nama:</label>
-                                                <input type="text" name="anggota_pendesain[{{ $index }}][nama]" id="anggota_nama_{{ $index }}" value="{{ $anggota['nama'] ?? '' }}"
-                                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
+                                                <label for="anggota_pendesain_nama_{{ $index }}" class="block text-gray-600 text-sm font-medium mb-1">Nama:</label>
+                                                <input type="text" name="anggota_pendesain[{{ $index }}][nama]" id="anggota_pendesain_nama_{{ $index }}" value="{{ $anggota['nama'] ?? '' }}" required
+                                                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
                                             </div>
                                             <div>
-                                                <label for="anggota_kewarganegaraan_{{ $index }}" class="block mb-1 font-medium text-gray-600 text-sm">Kewarganegaraan:</label>
-                                                <input type="text" name="anggota_pendesain[{{ $index }}][kewarganegaraan]" id="anggota_kewarganegaraan_{{ $index }}" value="{{ $anggota['kewarganegaraan'] ?? 'Indonesia' }}" 
-                                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
+                                                <label for="anggota_pendesain_kewarganegaraan_{{ $index }}" class="block text-gray-600 text-sm font-medium mb-1">Kewarganegaraan:</label>
+                                                <input type="text" name="anggota_pendesain[{{ $index }}][kewarganegaraan]" id="anggota_pendesain_kewarganegaraan_{{ $index }}" value="{{ $anggota['kewarganegaraan'] ?? 'Indonesia' }}" required
+                                                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
                                             </div>
                                         </div>
                                         <div>
-                                            <label for="anggota_alamat_{{ $index }}" class="block mb-1 font-medium text-gray-600 text-sm">Alamat:</label>
-                                            <textarea name="anggota_pendesain[{{ $index }}][alamat]" id="anggota_alamat_{{ $index }}" rows="2"
-                                                      class="px-3 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">{{ $anggota['alamat'] ?? '' }}</textarea>
+                                            <label for="anggota_pendesain_alamat_{{ $index }}" class="block text-gray-600 text-sm font-medium mb-1">Alamat:</label>
+                                            <textarea name="anggota_pendesain[{{ $index }}][alamat]" id="anggota_pendesain_alamat_{{ $index }}" rows="2" required
+                                                      class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">{{ $anggota['alamat'] ?? '' }}</textarea>
                                         </div>
                                         <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
                                             <div>
-                                                <label for="anggota_rt_rw_{{ $index }}" class="block mb-1 font-medium text-gray-600 text-sm">RT/RW:</label>
-                                                <input type="text" name="anggota_pendesain[{{ $index }}][rt_rw]" id="anggota_rt_rw_{{ $index }}" value="{{ $anggota['rt_rw'] ?? '' }}"
-                                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
+                                                <label for="anggota_pendesain_rt_rw_{{ $index }}" class="block text-gray-600 text-sm font-medium mb-1">RT/RW:</label>
+                                                <input type="text" name="anggota_pendesain[{{ $index }}][rt_rw]" id="anggota_pendesain_rt_rw_{{ $index }}" value="{{ $anggota['rt_rw'] ?? '' }}" required
+                                                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
                                             </div>
                                             <div>
-                                                <label for="anggota_kelurahan_{{ $index }}" class="block mb-1 font-medium text-gray-600 text-sm">Kelurahan:</label>
-                                                <input type="text" name="anggota_pendesain[{{ $index }}][kelurahan]" id="anggota_kelurahan_{{ $index }}" value="{{ $anggota['kelurahan'] ?? '' }}"
-                                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
+                                                <label for="anggota_pendesain_kelurahan_{{ $index }}" class="block text-gray-600 text-sm font-medium mb-1">Kelurahan:</label>
+                                                <input type="text" name="anggota_pendesain[{{ $index }}][kelurahan]" id="anggota_pendesain_kelurahan_{{ $index }}" value="{{ $anggota['kelurahan'] ?? '' }}" required
+                                                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
                                             </div>
                                         </div>
                                         <div class="gap-4 grid grid-cols-1 md:grid-cols-3">
                                             <div>
-                                                <label for="anggota_kecamatan_{{ $index }}" class="block mb-1 font-medium text-gray-600 text-sm">Kecamatan:</label>
-                                                <input type="text" name="anggota_pendesain[{{ $index }}][kecamatan]" id="anggota_kecamatan_{{ $index }}" value="{{ $anggota['kecamatan'] ?? '' }}"
-                                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
+                                                <label for="anggota_pendesain_kecamatan_{{ $index }}" class="block text-gray-600 text-sm font-medium mb-1">Kecamatan:</label>
+                                                <input type="text" name="anggota_pendesain[{{ $index }}][kecamatan]" id="anggota_pendesain_kecamatan_{{ $index }}" value="{{ $anggota['kecamatan'] ?? '' }}" required
+                                                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
                                             </div>
                                             <div>
-                                                <label for="anggota_kota_kabupaten_{{ $index }}" class="block mb-1 font-medium text-gray-600 text-sm">Kota/Kabupaten:</label>
-                                                <input type="text" name="anggota_pendesain[{{ $index }}][kota_kabupaten]" id="anggota_kota_kabupaten_{{ $index }}" value="{{ $anggota['kota_kabupaten'] ?? '' }}"
-                                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
+                                                <label for="anggota_pendesain_kota_kabupaten_{{ $index }}" class="block text-gray-600 text-sm font-medium mb-1">Kota/Kabupaten:</label>
+                                                <input type="text" name="anggota_pendesain[{{ $index }}][kota_kabupaten]" id="anggota_pendesain_kota_kabupaten_{{ $index }}" value="{{ $anggota['kota_kabupaten'] ?? '' }}" required
+                                                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
                                             </div>
                                             <div>
-                                                <label for="anggota_kodepos_{{ $index }}" class="block mb-1 font-medium text-gray-600 text-sm">Kode POS:</label>
-                                                <input type="text" name="anggota_pendesain[{{ $index }}][kodepos]" id="anggota_kodepos_{{ $index }}" value="{{ $anggota['kodepos'] ?? '' }}"
-                                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
+                                                <label for="anggota_pendesain_kodepos_{{ $index }}" class="block text-gray-600 text-sm font-medium mb-1">Kode POS:</label>
+                                                <input type="text" name="anggota_pendesain[{{ $index }}][kodepos]" id="anggota_pendesain_kodepos_{{ $index }}" value="{{ $anggota['kodepos'] ?? '' }}" required
+                                                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
                                             </div>
                                         </div>
                                         <div>
-                                            <label for="anggota_provinsi_{{ $index }}" class="block mb-1 font-medium text-gray-600 text-sm">Provinsi:</label>
-                                            <input type="text" name="anggota_pendesain[{{ $index }}][provinsi]" id="anggota_provinsi_{{ $index }}" value="{{ $anggota['provinsi'] ?? '' }}"
-                                                   class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
+                                            <label for="anggota_pendesain_provinsi_{{ $index }}" class="block text-gray-600 text-sm font-medium mb-1">Provinsi:</label>
+                                            <input type="text" name="anggota_pendesain[{{ $index }}][provinsi]" id="anggota_pendesain_provinsi_{{ $index }}" value="{{ $anggota['provinsi'] ?? '' }}" required
+                                                   class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
                                         </div>
                                     </div>
                                 @endforeach
                             @endif
                         </div>
-                        <button type="button" id="add_anggota_pendesain_btn" class="bg-blue-500 hover:bg-blue-600 shadow-md px-6 py-3 rounded-full font-semibold text-md text-white transition duration-200 cursor-pointer">
-                            Tambah Anggota Pendesain
-                        </button>
+           <button type="button" id="add_anggota_pendesain_btn" class="bg-blue-500 hover:bg-blue-600 shadow-md px-6 py-3 rounded-full font-semibold text-md text-white transition duration-200 cursor-pointer">
+    Tambah Anggota Pendesain
+</button>
+
+<script>
+// Complete functionality in one script
+function addAnggotaPendesainField() {
+    console.log('addAnggotaPendesainField function executing');
+    
+    const anggotaPendesainContainer = document.getElementById('anggota_pendesain_container');
+    if (!anggotaPendesainContainer) {
+        console.error('anggota_pendesain_container not found');
+        return;
+    }
+    
+    const div = document.createElement('div');
+    div.classList.add('anggota-pendesain-item', 'space-y-4', 'border', 'border-gray-300', 'p-4', 'rounded-lg', 'relative');
+    const currentIndex = anggotaPendesainContainer.children.length;
+    
+    div.innerHTML = `
+        <h4 class="text-md font-semibold text-gray-700">Anggota Pendesain #${currentIndex + 1}</h4>
+        <button type="button" class="remove-anggota-pendesain-btn absolute top-2 right-2 text-red-500 hover:text-red-700 transition duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Nama:</label>
+                <input type="text" name="anggota_pendesain[${currentIndex}][nama]" required
+                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+            </div>
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Kewarganegaraan:</label>
+                <input type="text" name="anggota_pendesain[${currentIndex}][kewarganegaraan]" value="Indonesia" required
+                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+            </div>
+        </div>
+        <div>
+            <label class="block text-gray-600 text-sm font-medium mb-1">Alamat:</label>
+            <textarea name="anggota_pendesain[${currentIndex}][alamat]" rows="2" required
+                      class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700"></textarea>
+        </div>
+        <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">RT/RW:</label>
+                <input type="text" name="anggota_pendesain[${currentIndex}][rt_rw]" required
+                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+            </div>
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Kelurahan:</label>
+                <input type="text" name="anggota_pendesain[${currentIndex}][kelurahan]" required
+                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+            </div>
+        </div>
+        <div class="gap-4 grid grid-cols-1 md:grid-cols-3">
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Kecamatan:</label>
+                <input type="text" name="anggota_pendesain[${currentIndex}][kecamatan]" required
+                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+            </div>
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Kota/Kabupaten:</label>
+                <input type="text" name="anggota_pendesain[${currentIndex}][kota_kabupaten]" required
+                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+            </div>
+            <div>
+                <label class="block text-gray-600 text-sm font-medium mb-1">Kode POS:</label>
+                <input type="text" name="anggota_pendesain[${currentIndex}][kodepos]" required
+                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+            </div>
+        </div>
+        <div>
+            <label class="block text-gray-600 text-sm font-medium mb-1">Provinsi:</label>
+            <input type="text" name="anggota_pendesain[${currentIndex}][provinsi]" required
+                   class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+        </div>
+    `;
+    
+    anggotaPendesainContainer.appendChild(div);
+    console.log('New anggota pendesain field added successfully');
+
+    // Add remove functionality to the new button
+    const removeBtn = div.querySelector('.remove-anggota-pendesain-btn');
+    removeBtn.addEventListener('click', function() {
+        console.log('Remove button clicked');
+        div.remove();
+        reindexPendesainFields();
+    });
+}
+
+function reindexPendesainFields() {
+    const container = document.getElementById('anggota_pendesain_container');
+    const items = container.querySelectorAll('.anggota-pendesain-item');
+    
+    items.forEach((item, index) => {
+        const title = item.querySelector('h4');
+        if (title) {
+            title.textContent = `Anggota Pendesain #${index + 1}`;
+        }
+
+        // Update input names
+        item.querySelectorAll('input, textarea').forEach(input => {
+            const oldName = input.name;
+            if (oldName && oldName.includes('anggota_pendesain')) {
+                const newName = oldName.replace(/\[\d+\]/, `[${index}]`);
+                input.name = newName;
+            }
+        });
+    });
+}
+
+// Add event listener to the button
+document.getElementById('add_anggota_pendesain_btn').addEventListener('click', function() {
+    // console.log('Tambah Anggota Pendesain button clicked!');
+    addAnggotaPendesainField();
+});
+
+// Add remove listeners to existing items when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // console.log('DOM loaded - adding remove listeners to existing items');
+    
+    document.querySelectorAll('.remove-anggota-pendesain-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            this.closest('.anggota-pendesain-item').remove();
+            reindexPendesainFields();
+        });
+    });
+});
+
+// console.log('Script loaded - button should work now');
+</script>
 
                         {{-- Files --}}
                         <h3 class="mt-6 mb-2 font-semibold text-gray-700 text-lg">Dokumen Pendukung</h3>
@@ -354,179 +483,158 @@
     </div>
 
     @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Toggle badan hukum fields
-                const pemohonJenisRadios = document.querySelectorAll('input[name="pemohon_jenis"]');
-                const badanHukumFields = document.getElementById('badan_hukum_fields');
-                const aktaBadanHukumContainer = document.getElementById('file_path_akta_badan_hukum_container');
-                const pemohonBadanHukumInput = document.getElementById('pemohon_badan_hukum');
-                const aktaBadanHukumInput = document.getElementById('file_path_akta_badan_hukum');
+    <script>
+        // Make the function globally accessible
+        function addAnggotaPendesainField() {
+            console.log('addAnggotaPendesainField function executing');
+            
+            const anggotaPendesainContainer = document.getElementById('anggota_pendesain_container');
+            if (!anggotaPendesainContainer) {
+                console.error('anggota_pendesain_container not found');
+                return;
+            }
+            
+            const div = document.createElement('div');
+            div.classList.add('anggota-pendesain-item', 'space-y-4', 'border', 'border-gray-300', 'p-4', 'rounded-lg', 'relative');
+            const currentIndex = anggotaPendesainContainer.children.length;
+            
+            div.innerHTML = `
+                <h4 class="text-md font-semibold text-gray-700">Anggota Pendesain #${currentIndex + 1}</h4>
+                <button type="button" class="remove-anggota-pendesain-btn absolute top-2 right-2 text-red-500 hover:text-red-700 transition duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+                <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
+                    <div>
+                        <label class="block text-gray-600 text-sm font-medium mb-1">Nama:</label>
+                        <input type="text" name="anggota_pendesain[${currentIndex}][nama]" required
+                               class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 text-sm font-medium mb-1">Kewarganegaraan:</label>
+                        <input type="text" name="anggota_pendesain[${currentIndex}][kewarganegaraan]" value="Indonesia" required
+                               class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-600 text-sm font-medium mb-1">Alamat:</label>
+                    <textarea name="anggota_pendesain[${currentIndex}][alamat]" rows="2" required
+                              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700"></textarea>
+                </div>
+                <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
+                    <div>
+                        <label class="block text-gray-600 text-sm font-medium mb-1">RT/RW:</label>
+                        <input type="text" name="anggota_pendesain[${currentIndex}][rt_rw]" required
+                               class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 text-sm font-medium mb-1">Kelurahan:</label>
+                        <input type="text" name="anggota_pendesain[${currentIndex}][kelurahan]" required
+                               class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+                    </div>
+                </div>
+                <div class="gap-4 grid grid-cols-1 md:grid-cols-3">
+                    <div>
+                        <label class="block text-gray-600 text-sm font-medium mb-1">Kecamatan:</label>
+                        <input type="text" name="anggota_pendesain[${currentIndex}][kecamatan]" required
+                               class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 text-sm font-medium mb-1">Kota/Kabupaten:</label>
+                        <input type="text" name="anggota_pendesain[${currentIndex}][kota_kabupaten]" required
+                               class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+                    </div>
+                    <div>
+                        <label class="block text-gray-600 text-sm font-medium mb-1">Kode POS:</label>
+                        <input type="text" name="anggota_pendesain[${currentIndex}][kodepos]" required
+                               class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-gray-600 text-sm font-medium mb-1">Provinsi:</label>
+                    <input type="text" name="anggota_pendesain[${currentIndex}][provinsi]" required
+                           class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
+                </div>
+            `;
+            
+            anggotaPendesainContainer.appendChild(div);
+            console.log('New anggota pendesain field added successfully');
 
-                function toggleBadanHukumFields() {
-                    const selectedValue = document.querySelector('input[name="pemohon_jenis"]:checked')?.value;
-                    
-                    if (selectedValue === 'badan_hukum') {
-                        badanHukumFields.classList.remove('hidden');
-                        aktaBadanHukumContainer.classList.remove('hidden');
-                        pemohonBadanHukumInput.required = true;
-                        aktaBadanHukumInput.required = true;
-                    } else {
-                        badanHukumFields.classList.add('hidden');
-                        aktaBadanHukumContainer.classList.add('hidden');
-                        pemohonBadanHukumInput.required = false;
-                        aktaBadanHukumInput.required = false;
-                        pemohonBadanHukumInput.value = '';
-                        aktaBadanHukumInput.value = '';
-                    }
+            // Add remove functionality to the new button
+            const removeBtn = div.querySelector('.remove-anggota-pendesain-btn');
+            removeBtn.addEventListener('click', function() {
+                console.log('Remove button clicked');
+                div.remove();
+                reindexPendesainFields();
+            });
+        }
+
+        function reindexPendesainFields() {
+            const container = document.getElementById('anggota_pendesain_container');
+            const items = container.querySelectorAll('.anggota-pendesain-item');
+            
+            items.forEach((item, index) => {
+                const title = item.querySelector('h4');
+                if (title) {
+                    title.textContent = `Anggota Pendesain #${index + 1}`;
                 }
 
-                pemohonJenisRadios.forEach(radio => {
-                    radio.addEventListener('change', toggleBadanHukumFields);
-                });
-
-                // Initialize on page load
-                toggleBadanHukumFields();
-
-                // Dynamic anggota pendesain fields
-                let anggotaPendesainIndex = {{ count(old('anggota_pendesain', [])) }};
-                const anggotaPendesainContainer = document.getElementById('anggota_pendesain_container');
-                const addAnggotaPendesainBtn = document.getElementById('add_anggota_pendesain_btn');
-
-                function createAnggotaPendesainField(index) {
-                    const div = document.createElement('div');
-                    div.classList.add('anggota-pendesain-item', 'space-y-4', 'border', 'border-gray-300', 'p-4', 'rounded-lg', 'relative');
-                    div.innerHTML = `
-                        <h4 class="font-semibold text-gray-700 text-md">Anggota Pendesain #${index + 1}</h4>
-                        <button type="button" class="top-2 right-2 absolute text-red-500 hover:text-red-700 transition duration-200 remove-anggota-pendesain-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                        <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
-                            <div>
-                                <label for="anggota_nama_${index}" class="block mb-1 font-medium text-gray-600 text-sm">Nama:</label>
-                                <input type="text" name="anggota_pendesain[${index}][nama]" id="anggota_nama_${index}"
-                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
-                            </div>
-                            <div>
-                                <label for="anggota_kewarganegaraan_${index}" class="block mb-1 font-medium text-gray-600 text-sm">Kewarganegaraan:</label>
-                                <input type="text" name="anggota_pendesain[${index}][kewarganegaraan]" id="anggota_kewarganegaraan_${index}" value="Indonesia"
-                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="anggota_alamat_${index}" class="block mb-1 font-medium text-gray-600 text-sm">Alamat:</label>
-                            <textarea name="anggota_pendesain[${index}][alamat]" id="anggota_alamat_${index}" rows="2"
-                                      class="px-3 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700"></textarea>
-                        </div>
-                        <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
-                            <div>
-                                <label for="anggota_rt_rw_${index}" class="block mb-1 font-medium text-gray-600 text-sm">RT/RW:</label>
-                                <input type="text" name="anggota_pendesain[${index}][rt_rw]" id="anggota_rt_rw_${index}"
-                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
-                            </div>
-                            <div>
-                                <label for="anggota_kelurahan_${index}" class="block mb-1 font-medium text-gray-600 text-sm">Kelurahan:</label>
-                                <input type="text" name="anggota_pendesain[${index}][kelurahan]" id="anggota_kelurahan_${index}"
-                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
-                            </div>
-                        </div>
-                        <div class="gap-4 grid grid-cols-1 md:grid-cols-3">
-                            <div>
-                                <label for="anggota_kecamatan_${index}" class="block mb-1 font-medium text-gray-600 text-sm">Kecamatan:</label>
-                                <input type="text" name="anggota_pendesain[${index}][kecamatan]" id="anggota_kecamatan_${index}"
-                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
-                            </div>
-                            <div>
-                                <label for="anggota_kota_kabupaten_${index}" class="block mb-1 font-medium text-gray-600 text-sm">Kota/Kabupaten:</label>
-                                <input type="text" name="anggota_pendesain[${index}][kota_kabupaten]" id="anggota_kota_kabupaten_${index}"
-                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
-                            </div>
-                            <div>
-                                <label for="anggota_kodepos_${index}" class="block mb-1 font-medium text-gray-600 text-sm">Kode POS:</label>
-                                <input type="text" name="anggota_pendesain[${index}][kodepos]" id="anggota_kodepos_${index}"
-                                       class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="anggota_provinsi_${index}" class="block mb-1 font-medium text-gray-600 text-sm">Provinsi:</label>
-                            <input type="text" name="anggota_pendesain[${index}][provinsi]" id="anggota_provinsi_${index}"
-                                   class="px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-1 w-full text-gray-700">
-                        </div>
-                    `;
-                    return div;
-                }
-
-                function reindexAnggotaPendesain() {
-                    const items = anggotaPendesainContainer.querySelectorAll('.anggota-pendesain-item');
-                    items.forEach((item, index) => {
-                        // Update title
-                        const title = item.querySelector('h4');
-                        if (title) {
-                            title.textContent = `Anggota Pendesain #${index + 1}`;
-                        }
-
-                        // Update all input names and IDs
-                        const inputs = item.querySelectorAll('input, textarea');
-                        inputs.forEach(input => {
-                            const name = input.name;
-                            const id = input.id;
-                            
-                            if (name && name.includes('anggota_pendesain')) {
-                                input.name = name.replace(/\[\d+\]/, `[${index}]`);
-                            }
-                            
-                            if (id && id.includes('anggota_')) {
-                                const newId = id.replace(/_\d+$/, `_${index}`);
-                                input.id = newId;
-                                
-                                // Update corresponding label
-                                const label = item.querySelector(`label[for="${id}"]`);
-                                if (label) {
-                                    label.setAttribute('for', newId);
-                                }
-                            }
-                        });
-                    });
-                    anggotaPendesainIndex = items.length;
-                }
-
-                function addAnggotaPendesainField() {
-                    const newField = createAnggotaPendesainField(anggotaPendesainIndex);
-                    anggotaPendesainContainer.appendChild(newField);
-                    
-                    // Add remove event listener
-                    const removeBtn = newField.querySelector('.remove-anggota-pendesain-btn');
-                    removeBtn.addEventListener('click', function() {
-                        newField.remove();
-                        reindexAnggotaPendesain();
-                    });
-                    
-                    anggotaPendesainIndex++;
-                }
-
-                addAnggotaPendesainBtn.addEventListener('click', addAnggotaPendesainField);
-
-                // Add remove event listeners to existing items
-                document.querySelectorAll('.remove-anggota-pendesain-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        btn.closest('.anggota-pendesain-item').remove();
-                        reindexAnggotaPendesain();
-                    });
-                });
-
-                // Form validation
-                const form = document.querySelector('form');
-                form.addEventListener('submit', function(e) {
-                    const klaimDesain = document.querySelectorAll('input[name="klaim_desain[]"]:checked');
-                    if (klaimDesain.length === 0) {
-                        e.preventDefault();
-                        alert('Pilih minimal satu klaim desain.');
-                        return false;
+                // Update input names
+                item.querySelectorAll('input, textarea').forEach(input => {
+                    const oldName = input.name;
+                    if (oldName && oldName.includes('anggota_pendesain')) {
+                        const newName = oldName.replace(/\[\d+\]/, `[${index}]`);
+                        input.name = newName;
                     }
                 });
             });
-        </script>
-    @endpush
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded - starting script execution');
+
+            // Initialize other functionality
+            const pemohonJenisRadios = document.querySelectorAll('input[name="pemohon_jenis"]');
+            const badanHukumFields = document.getElementById('badan_hukum_fields');
+            const aktaBadanHukumContainer = document.getElementById('file_path_akta_badan_hukum_container');
+            const pemohonBadanHukumInput = document.getElementById('pemohon_badan_hukum');
+            const aktaBadanHukumInput = document.getElementById('file_path_akta_badan_hukum');
+
+            function toggleBadanHukumFields() {
+                const selectedValue = document.querySelector('input[name="pemohon_jenis"]:checked')?.value;
+                
+                if (selectedValue === 'badan_hukum') {
+                    badanHukumFields.classList.remove('hidden');
+                    aktaBadanHukumContainer.classList.remove('hidden');
+                    pemohonBadanHukumInput.required = true;
+                    aktaBadanHukumInput.required = true;
+                } else {
+                    badanHukumFields.classList.add('hidden');
+                    aktaBadanHukumContainer.classList.add('hidden');
+                    pemohonBadanHukumInput.required = false;
+                    aktaBadanHukumInput.required = false;
+                    pemohonBadanHukumInput.value = '';
+                    aktaBadanHukumInput.value = '';
+                }
+            }
+
+            pemohonJenisRadios.forEach(radio => {
+                radio.addEventListener('change', toggleBadanHukumFields);
+            });
+
+            toggleBadanHukumFields();
+
+            // Add remove listeners to existing items
+            document.querySelectorAll('.remove-anggota-pendesain-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.anggota-pendesain-item').remove();
+                    reindexPendesainFields();
+                });
+            });
+
+            console.log('All JavaScript functionality initialized');
+        });
+    </script>
+@endpush
 @endsection
