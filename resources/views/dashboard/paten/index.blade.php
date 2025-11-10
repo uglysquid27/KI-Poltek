@@ -35,7 +35,7 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                                        {{-- <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th> --}}
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul Paten</th>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Ketua Inventor</th>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Jenis Paten</th>
@@ -47,7 +47,7 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($patens as $paten)
                                         <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $paten->id }}</td>
+                                            {{-- <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $paten->id }}</td> --}}
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ Str::limit($paten->judul_paten, 50) }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ $paten->ketua_inventor_nama }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ $paten->jenis_paten }}</td>

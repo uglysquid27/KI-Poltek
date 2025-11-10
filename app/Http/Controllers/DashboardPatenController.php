@@ -17,25 +17,27 @@ class DashboardPatenController extends Controller
      *
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function index()
-    {
-        // Pastikan hanya pengguna terautentikasi yang bisa mengakses
-        $token = request()->cookie('auth_token');
-        $authenticatedUser = null;
-        if ($token) {
-            $authenticatedUser = User::where('remember_token', $token)->first();
-        }
-        if (!$authenticatedUser) {
-            return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
-        }
-
-        // Mengambil daftar Paten.
-        // Jika Anda ingin hanya menampilkan Paten milik pengguna yang login,
-        // ubah menjadi: $patens = Paten::where('user_id', $authenticatedUser->user_id)->with('kekayaanIntelektual')->paginate(10);
-        $patens = Paten::with('kekayaanIntelektual')->paginate(10); // Mengambil 10 item per halaman
-
-        return view('dashboard.paten.index', compact('patens'));
+   public function index()
+{
+    // Pastikan hanya pengguna terautentikasi yang bisa mengakses
+    $token = request()->cookie('auth_token');
+    $authenticatedUser = null;
+    if ($token) {
+        $authenticatedUser = User::where('remember_token', $token)->first();
     }
+    if (!$authenticatedUser) {
+        return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
+    }
+
+    // Mengambil daftar Paten dengan urutan terbaru ke terlama
+    // Jika Anda ingin hanya menampilkan Paten milik pengguna yang login,
+    // ubah menjadi: $patens = Paten::where('user_id', $authenticatedUser->user_id)->with('kekayaanIntelektual')->orderBy('created_at', 'desc')->paginate(10);
+    $patens = Paten::with('kekayaanIntelektual')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10); // Mengambil 10 item per halaman
+
+    return view('dashboard.paten.index', compact('patens'));
+}
 
     /**
      * Menampilkan formulir untuk membuat entri Paten baru.

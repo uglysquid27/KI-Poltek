@@ -79,7 +79,7 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                                        {{-- <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th> --}}
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul Karya</th>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Jenis Karya</th>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Pencipta Utama</th>
@@ -91,7 +91,7 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($hakCiptas as $hakCipta)
                                         <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $hakCipta->id }}</td>
+                                            {{-- <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $hakCipta->id }}</td> --}}
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ Str::limit($hakCipta->judul_karya, 50) }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ $hakCipta->jenis_karya }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ $hakCipta->pencipta_nama }}</td>
@@ -138,7 +138,7 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                                        {{-- <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th> --}}
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul Paten</th>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Inventor Utama</th>
                                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tanggal Pengajuan</th>
@@ -149,7 +149,7 @@
                                 <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach($patens as $paten)
                                         <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
-                                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $paten->id }}</td>
+                                            {{-- <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $paten->id }}</td> --}}
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ Str::limit($paten->judul_paten, 50) }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ $paten->inventor_nama }}</td>
                                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ \Carbon\Carbon::parse($paten->kekayaanIntelektual->submission_date)->format('d M Y') }}</td>
@@ -198,7 +198,7 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th>
+                        {{-- <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">ID</th> --}}
                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Judul Desain</th>
                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Klaim</th>
                         <th class="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Pendesain Utama</th>
@@ -209,7 +209,7 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @foreach($desainIndustris as $desain)
                         <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
-                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $desain->id }}</td>
+                            {{-- <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">{{ $desain->id }}</td> --}}
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">{{ Str::limit($desain->judul_desain, 50) }}</td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-800">
                                 {{ is_array($desain->klaim_desain) ? implode(', ', $desain->klaim_desain) : implode(', ', json_decode($desain->klaim_desain, true)) }}

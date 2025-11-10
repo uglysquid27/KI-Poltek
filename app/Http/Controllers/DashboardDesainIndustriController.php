@@ -14,19 +14,22 @@ use Illuminate\Support\Facades\Validator;
 class DashboardDesainIndustriController extends Controller
 {
     public function index()
-    {
-        $token = request()->cookie('auth_token');
-        $authenticatedUser = null;
-        if ($token) {
-            $authenticatedUser = User::where('remember_token', $token)->first();
-        }
-        if (!$authenticatedUser) {
-            return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
-        }
-
-        $desainIndustris = DesainIndustri::with('kekayaanIntelektual')->paginate(10);
-        return view('dashboard.desain_industri.index', compact('desainIndustris'));
+{
+    $token = request()->cookie('auth_token');
+    $authenticatedUser = null;
+    if ($token) {
+        $authenticatedUser = User::where('remember_token', $token)->first();
     }
+    if (!$authenticatedUser) {
+        return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
+    }
+
+    $desainIndustris = DesainIndustri::with('kekayaanIntelektual')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+        
+    return view('dashboard.desain_industri.index', compact('desainIndustris'));
+}
 
     public function create()
     {

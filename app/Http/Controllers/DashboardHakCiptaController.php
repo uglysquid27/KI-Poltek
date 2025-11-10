@@ -12,20 +12,23 @@ use Illuminate\Support\Facades\Storage;
 
 class DashboardHakCiptaController extends Controller
 {
-    public function index()
-    {
-        $token = request()->cookie('auth_token');
-        $authenticatedUser = null;
-        if ($token) {
-            $authenticatedUser = User::where('remember_token', $token)->first();
-        }
-        if (!$authenticatedUser) {
-            return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
-        }
-
-        $hakCiptas = HakCipta::with('kekayaanIntelektual')->paginate(10);
-        return view('dashboard.hak_cipta.index', compact('hakCiptas'));
+   public function index()
+{
+    $token = request()->cookie('auth_token');
+    $authenticatedUser = null;
+    if ($token) {
+        $authenticatedUser = User::where('remember_token', $token)->first();
     }
+    if (!$authenticatedUser) {
+        return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
+    }
+
+    $hakCiptas = HakCipta::with('kekayaanIntelektual')
+        ->orderBy('created_at', 'desc')
+        ->paginate(10);
+        
+    return view('dashboard.hak_cipta.index', compact('hakCiptas'));
+}
 
     public function create()
     {
