@@ -27,10 +27,11 @@
                             <ul id="dropdownMenu"
                                 class="hidden z-10 absolute bg-white opacity-0 shadow-lg mt-1 border border-gray-300 rounded-lg w-full scale-95 transition-all duration-300 ease-in-out transform">
                                 <li class="hover:bg-gray-100 px-4 py-2 text-gray-600 cursor-pointer" data-value="hak_cipta">
-                                    Hak Cipta
-                                </li>
+                                    Hak Cipta</li>
                                 <li class="hover:bg-gray-100 px-4 py-2 text-gray-600 cursor-pointer" data-value="paten">
                                     Paten</li>
+                                <li class="hover:bg-gray-100 px-4 py-2 text-gray-600 cursor-pointer"
+                                    data-value="desain_industri">Desain Industri</li>
                             </ul>
                             <input type="hidden" name="filter" id="filter" value="{{ request('filter') ?? 'hak_cipta' }}">
                         </div>
@@ -45,8 +46,8 @@
                                 <g>
                                     <path
                                         d="M484.1,454.796l-110.5-110.6c29.8-36.3,47.6-82.8,47.6-133.4c0-116.3-94.3-210.6-210.6-210.6S0,94.496,0,210.796
-                                                            s94.3,210.6,210.6,210.6c50.8,0,97.4-18,133.8-48l110.5,110.5c12.9,11.8,25,4.2,29.2,0C492.5,475.596,492.5,463.096,484.1,454.796z
-                                                            M41.1,210.796c0-93.6,75.9-169.5,169.5-169.5s169.6,75.9,169.6,169.5s-75.9,169.5-169.5,169.5S41.1,304.396,41.1,210.796z" />
+                                                                    s94.3,210.6,210.6,210.6c50.8,0,97.4-18,133.8-48l110.5,110.5c12.9,11.8,25,4.2,29.2,0C492.5,475.596,492.5,463.096,484.1,454.796z
+                                                                    M41.1,210.796c0-93.6,75.9-169.5,169.5-169.5s169.6,75.9,169.6,169.5s-75.9,169.5-169.5,169.5S41.1,304.396,41.1,210.796z" />
                                 </g>
                             </svg>
                         </button>
@@ -92,38 +93,42 @@
                 @else
                     <div class="space-y-4">
                         @foreach($results as $result)
-
-                            <a href="{{ $result->type === 'hak_cipta' ? route('hak_cipta.detail', ['id' => $result->ki_id]) : route('paten.detail', ['id' => $result->ki_id]) }}"
-                                class="block">
-                                <div class="flex flex-col pb-4 border-gray-300 border-b">
-                                    <div class="flex flex-col gap-1">
-                                        <div class="flex justify-between items-start gap-4 w-full">
-                                            <div class="flex flex-col flex-1 gap-1">
-                                                <h1 class="font-bold text-gray-600 text-md md:text-lg cursor-pointer">
-                                                    <span>{{ $result->title }}</span>
-                                                </h1>
-                                                <div class="flex md:flex-row flex-col md:items-center gap-2">
-                                                    <div>
-                                                        <div
-                                                            class="inline-flex items-center bg-blue-200 hover:bg-blue-200 px-2.5 py-0.5 border border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 font-semibold text-blue-700 text-xs transition-colors">
-                                                            {{ ucfirst($result->status) }}
+                                        <a href="{{ 
+                                $result->type === 'hak_cipta' ? route('hak_cipta.detail', ['id' => $result->ki_id]) :
+                                    ($result->type === 'paten' ? route('paten.detail', ['id' => $result->ki_id]) :
+                                        route('desain_industri.detail', ['id' => $result->ki_id])) 
+                            }}" class="block">
+                                            <div class="flex flex-col pb-4 border-gray-300 border-b">
+                                                <div class="flex flex-col gap-1">
+                                                    <div class="flex justify-between items-start gap-4 w-full">
+                                                        <div class="flex flex-col flex-1 gap-1">
+                                                            <h1 class="font-bold text-gray-600 text-md md:text-lg cursor-pointer">
+                                                                <span>{{ $result->title }}</span>
+                                                            </h1>
+                                                            <div class="flex md:flex-row flex-col md:items-center gap-2">
+                                                                <div>
+                                                                    <div
+                                                                        class="inline-flex items-center bg-blue-200 hover:bg-blue-200 px-2.5 py-0.5 border border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 font-semibold text-blue-700 text-xs transition-colors">
+                                                                        {{ ucfirst($result->status) }}
+                                                                    </div>
+                                                                </div>
+                                                                <p class="font-medium text-gray-500 text-sm">
+                                                                    @if ($result->type === 'hak_cipta' && $result->hakCipta)
+                                                                        {{ $result->hakCipta->hak_cipta_number ?? 'N/A' }}
+                                                                    @elseif ($result->type === 'paten' && $result->paten)
+                                                                        {{ $result->paten->paten_number ?? 'N/A' }}
+                                                                    @elseif ($result->type === 'desain_industri' && $result->desainIndustri)
+                                                                        {{ $result->desainIndustri->id ?? 'N/A' }}
+                                                                    @else
+                                                                        {{ $result->registration_number ?? 'N/A' }}
+                                                                    @endif
+                                                                </p>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <p class="font-medium text-gray-500 text-sm">
-                                                        @if ($result->type === 'hak_cipta' && $result->hakCipta)
-                                                            {{ $result->hakCipta->hak_cipta_number }}
-                                                        @elseif ($result->type === 'paten' && $result->paten)
-                                                            {{ $result->paten->paten_number }}
-                                                        @else
-                                                            {{ $result->registration_number }}
-                                                        @endif
-                                                    </p>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                                        </a>
                         @endforeach
                     </div>
                 @endif

@@ -23,6 +23,7 @@ Route::get('/advanced-search', [SearchController::class, 'advancedSearch'])->nam
 // Detail pages
 Route::get('/hak-cipta/{id}', [PublicHakCiptaController::class, 'show'])->name('hak_cipta.detail');
 Route::get('/paten/{id}', [PatenController::class, 'show'])->name('paten.detail');
+Route::get('/desain-industri/{id}', [DesainIndustriController::class, 'show'])->name('desain_industri.detail');
 
 // Authentication routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
