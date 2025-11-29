@@ -3,93 +3,141 @@
 @section('title', 'Login')
 
 @section('content')
-    <div class="min-h-screen flex flex-col">
-        {{-- Navbar included from the selected code --}}
-        <div class="navbar bg-[#ffffff] shadow-sm w-full z-50">
-            <div class="flex-1 flex items-center m-2">
-                <a href="/" class="text-xl flex items-center space-x-2 ml-5">
-                    <img src="{{ asset('img/logo_polinema.png') }}" alt="Logo" class="h-13 w-auto">
-                    <span class="text-sm font-semibold text-gray-700" style="font-family: 'Montserrat', sans-serif;">
-                        Kekayaan Intelektual Politeknik Negeri Malang
-                    </span>
-                </a>
-            </div>
-            <div class="flex-none flex items-center space-x-5 mr-5"> {{-- Adjusted space-x for better spacing with new button --}}
-                <a class="text-gray-700 hover:text-gray-900 transition duration-200">Penelurusan</a>
-                <a class="text-gray-700 hover:text-gray-900 transition duration-200">Total</a>
-                <a class="text-gray-700 hover:text-gray-900 transition duration-200">Panduan</a>
-                {{-- Login Button --}}
-                <a href="{{ route('login') }}" class="px-5 py-2 text-white bg-[#68C5CC] hover:bg-[#5bb3b8] transition duration-200 cursor-pointer rounded-full font-semibold shadow-md">
-                    Login
-                </a>
-            </div>
-        </div>
+    <div class="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 to-cyan-50">
 
-        <div class="flex-grow flex items-center justify-center p-4">
-            <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md">
-                <h2 class="text-3xl font-bold text-gray-700 mb-6 text-center">Login</h2>
+        {{-- Main Content --}}
+        <div class="flex-grow flex items-center justify-center p-6">
+            <div class="bg-white/90 backdrop-blur-sm p-10 rounded-2xl shadow-2xl w-full max-w-md border border-white/20">
+                {{-- Header --}}
+                <div class="text-center mb-8">
+                    <div class="w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                         <img src="{{ asset('img/logo_polinema.png') }}" alt="Logo" class="h-13 w-auto">
+                    </div>
+                    <h2 class="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">Welcome Back</h2>
+                    <p class="text-gray-500 text-sm">Sign in to your account</p>
+                </div>
 
+                {{-- Error Message --}}
                 @if (session('error'))
-                    <p class="text-red-600 text-center mb-4 p-2 bg-red-100 rounded-md">{{ session('error') }}</p>
+                    <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center space-x-3 animate-fade-in">
+                        <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <p class="text-red-700 text-sm font-medium">{{ session('error') }}</p>
+                    </div>
                 @endif
 
-                <form method="POST" action="{{ route('login') }}" class="space-y-5">
+                {{-- Login Form --}}
+                <form method="POST" action="{{ route('login') }}" class="space-y-6">
                     @csrf
-                    <div>
-                        <label for="email" class="block text-gray-600 text-sm font-medium mb-2">Email:</label>
-                        <input type="email" name="email" id="email" required
-                               class="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#68C5CC] text-gray-700">
+                    
+                    {{-- Email Field --}}
+                    <div class="space-y-2">
+                        <label for="email" class="block text-sm font-semibold text-gray-700">Email Address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                                </svg>
+                            </div>
+                            <input type="email" name="email" id="email" required
+                                   class="w-full pl-10 pr-4 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#68C5CC]/50 focus:border-[#68C5CC] bg-white/50 text-gray-700 placeholder-gray-400 transition-all duration-300"
+                                   placeholder="Enter your email">
+                        </div>
                     </div>
 
-                    <div>
-                        <label for="password" class="block text-gray-600 text-sm font-medium mb-2">Password:</label>
+                    {{-- Password Field --}}
+                    <div class="space-y-2">
+                        <label for="password" class="block text-sm font-semibold text-gray-700">Password</label>
                         <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
                             <input type="password" id="password" name="password" required
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#68C5CC] text-gray-700 pr-10">
+                                   class="w-full pl-10 pr-12 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#68C5CC]/50 focus:border-[#68C5CC] bg-white/50 text-gray-700 placeholder-gray-400 transition-all duration-300"
+                                   placeholder="Enter your password">
                             <span id="togglePassword" onclick="togglePassword()"
-                                  class="cursor-pointer absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition duration-200">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.981 8.75C4.454 10.834 5.95 12.5 8 12.5c2.05 0 3.546-1.666 4.019-3.75M18.981 8.75C18.508 10.834 17.012 12.5 15 12.5c-2.05 0-3.546-1.666-4.019-3.75M15 12.5c-2.05 0-3.546-1.666-4.019-3.75m4.019 3.75c-.473 2.084-1.97 3.75-4.019 3.75s-3.546-1.666-4.019 3.75m4.019 3.75c.473 2.084 1.97 3.75 4.019 3.75s3.546-1.666 4.019-3.75M12 12.5c-2.05 0-3.546-1.666-4.019-3.75m4.019 3.75c.473 2.084 1.97 3.75 4.019 3.75s3.546-1.666 4.019-3.75M12 12.5V15m0 0v-2.5" />
+                                  class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer text-gray-400 hover:text-[#68C5CC] transition-colors duration-300">
+                                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
                             </span>
                         </div>
                     </div>
 
+                    {{-- Submit Button --}}
                     <button type="submit"
-                            class="w-full px-6 py-3 text-white bg-[#68C5CC] hover:bg-[#5bb3b8] transition duration-200 cursor-pointer rounded-full font-semibold text-lg shadow-md">
-                        Login
+                            class="w-full px-6 py-4 text-white bg-gradient-to-r from-[#68C5CC] to-[#5bb3b8] hover:from-[#5bb3b8] hover:to-[#4fa1a6] transition-all duration-300 cursor-pointer rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center space-x-2 group">
+                        <span>Sign In</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
                     </button>
                 </form>
+
+                {{-- Footer Note --}}
+                <div class="mt-8 text-center">
+                    <p class="text-xs text-gray-500">
+                        Secure access to your intellectual property
+                    </p>
+                </div>
             </div>
         </div>
-
-        <script>
-            /**
-             * Toggles the visibility of the password field and changes the eye icon.
-             */
-            function togglePassword() {
-                const passwordField = document.getElementById("password");
-                const toggleIcon = document.getElementById("togglePassword");
-
-                if (passwordField.type === "password") {
-                    passwordField.type = "text";
-                    // Change icon to eye (visible password)
-                    toggleIcon.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        </svg>
-                    `;
-                } else {
-                    passwordField.type = "password";
-                    // Change icon back to eye-slash (hidden password)
-                    toggleIcon.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.981 8.75C4.454 10.834 5.95 12.5 8 12.5c2.05 0 3.546-1.666 4.019-3.75M18.981 8.75C18.508 10.834 17.012 12.5 15 12.5c-2.05 0-3.546-1.666-4.019-3.75M15 12.5c-2.05 0-3.546-1.666-4.019-3.75m4.019 3.75c-.473 2.084-1.97 3.75-4.019 3.75s-3.546-1.666-4.019 3.75m4.019 3.75c.473 2.084 1.97 3.75 4.019 3.75s3.546-1.666 4.019-3.75M12 12.5c-2.05 0-3.546-1.666-4.019-3.75m4.019 3.75c.473 2.084 1.97 3.75 4.019 3.75s3.546-1.666 4.019-3.75M12 12.5V15m0 0v-2.5" />
-                        </svg>
-                    `;
-                }
-            }
-        </script>
     </div>
+
+    <style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out;
+        }
+        
+        /* Smooth focus transitions */
+        input:focus {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px -5px rgba(104, 197, 204, 0.1), 0 10px 10px -5px rgba(104, 197, 204, 0.04);
+        }
+    </style>
+
+    <script>
+        function togglePassword() {
+            const passwordField = document.getElementById("password");
+            const eyeIcon = document.getElementById("eyeIcon");
+            
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                eyeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                `;
+            } else {
+                passwordField.type = "password";
+                eyeIcon.innerHTML = `
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                `;
+            }
+        }
+        
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('ring-2', 'ring-[#68C5CC]/20');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('ring-2', 'ring-[#68C5CC]/20');
+                });
+            });
+        });
+    </script>
 @endsection
