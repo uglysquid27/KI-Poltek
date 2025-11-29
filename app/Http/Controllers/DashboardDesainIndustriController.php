@@ -27,7 +27,7 @@ class DashboardDesainIndustriController extends Controller
         $desainIndustris = DesainIndustri::with('kekayaanIntelektual')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-            
+
         return view('dashboard.desain_industri.index', compact('desainIndustris'));
     }
 
@@ -50,11 +50,11 @@ class DashboardDesainIndustriController extends Controller
         // Get the authenticated user
         $token = $request->cookie('auth_token');
         $authenticatedUser = null;
-        
+
         if ($token) {
             $authenticatedUser = User::where('remember_token', $token)->first();
         }
-        
+
         if (!$authenticatedUser) {
             Log::warning('Unauthorized attempt to store Desain Industri data.');
             return redirect()->route('login')->with('error', 'Anda harus login untuk mengunggah data.');
@@ -131,7 +131,7 @@ class DashboardDesainIndustriController extends Controller
 
         if ($existingDesain) {
             return back()
-                ->withErrors(['judul_desain' => 'Desain Industri dengan judul "'.$validatedData['judul_desain'].'" dan pendesain "'.$validatedData['pendesain_nama'].'" sudah terdaftar.'])
+                ->withErrors(['judul_desain' => 'Desain Industri dengan judul "' . $validatedData['judul_desain'] . '" dan pendesain "' . $validatedData['pendesain_nama'] . '" sudah terdaftar.'])
                 ->withInput();
         }
 
@@ -141,11 +141,11 @@ class DashboardDesainIndustriController extends Controller
             $filePaths['gambar_desain'] = $request->file('file_path_gambar_desain')->store('desain_industri_gambar', 'public');
             $filePaths['surat_pernyataan_kepemilikan'] = $request->file('file_path_surat_pernyataan_kepemilikan')->store('desain_industri_surat', 'public');
             $filePaths['ktp_pendesain'] = $request->file('file_path_ktp_pendesain')->store('desain_industri_ktp', 'public');
-            
+
             if ($request->hasFile('file_path_surat_pengalihan_hak')) {
                 $filePaths['surat_pengalihan_hak'] = $request->file('file_path_surat_pengalihan_hak')->store('desain_industri_surat', 'public');
             }
-            
+
             if ($request->hasFile('file_path_akta_badan_hukum')) {
                 $filePaths['akta_badan_hukum'] = $request->file('file_path_akta_badan_hukum')->store('desain_industri_akta', 'public');
             }
@@ -170,10 +170,10 @@ class DashboardDesainIndustriController extends Controller
                 'document' => $filePaths['gambar_desain'],
                 'user_id' => $authenticatedUser->id,
             ]);
-            
+
             // Debug: Check if KekayaanIntelektual was created
             Log::info('KekayaanIntelektual created with ID: ' . $kekayaanIntelektual->ki_id . ', User ID: ' . $kekayaanIntelektual->user_id);
-            
+
         } catch (\Exception $e) {
             Log::error('Failed to create KekayaanIntelektual entry: ' . $e->getMessage());
             foreach ($filePaths as $path) {
@@ -276,8 +276,13 @@ class DashboardDesainIndustriController extends Controller
         }
 
         $statusOptions = [
-            'Dalam Proses', 'Dibatalkan', 'Ditolak', 'Dihapus',
-            'Ditarik kembali', 'Berakhir', 'Diberi'
+            'Dalam Proses',
+            'Dibatalkan',
+            'Ditolak',
+            'Dihapus',
+            'Ditarik kembali',
+            'Berakhir',
+            'Diberi'
         ];
 
         return view('dashboard.desain_industri.edit_status', compact('desain', 'statusOptions'));
@@ -297,7 +302,7 @@ class DashboardDesainIndustriController extends Controller
         }
 
         $validatedData = $request->validate([
-            'status' => 'required|string|in:Dalam Proses,Dibatalkan,Ditolak,Dihapus,Didaftar,Ditarik kembali,Berakhir',
+            'status' => 'required|string|in:Dalam Proses,Dibatalkan,Ditolak,Dihapus,Didaftar,Ditarik kembali,Berakhir,Diberi',
         ]);
 
         $desain = DesainIndustri::with('kekayaanIntelektual')->find($id);

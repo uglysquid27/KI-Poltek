@@ -18,27 +18,27 @@ class DashboardPatenController extends Controller
      *
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
-   public function index()
-{
-    // Pastikan hanya pengguna terautentikasi yang bisa mengakses
-    $token = request()->cookie('auth_token');
-    $authenticatedUser = null;
-    if ($token) {
-        $authenticatedUser = User::where('remember_token', $token)->first();
-    }
-    if (!$authenticatedUser) {
-        return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
-    }
+    public function index()
+    {
+        // Pastikan hanya pengguna terautentikasi yang bisa mengakses
+        $token = request()->cookie('auth_token');
+        $authenticatedUser = null;
+        if ($token) {
+            $authenticatedUser = User::where('remember_token', $token)->first();
+        }
+        if (!$authenticatedUser) {
+            return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
+        }
 
-    // Mengambil daftar Paten dengan urutan terbaru ke terlama
-    // Jika Anda ingin hanya menampilkan Paten milik pengguna yang login,
-    // ubah menjadi: $patens = Paten::where('user_id', $authenticatedUser->user_id)->with('kekayaanIntelektual')->orderBy('created_at', 'desc')->paginate(10);
-    $patens = Paten::with('kekayaanIntelektual')
-        ->orderBy('created_at', 'desc')
-        ->paginate(10); // Mengambil 10 item per halaman
+        // Mengambil daftar Paten dengan urutan terbaru ke terlama
+        // Jika Anda ingin hanya menampilkan Paten milik pengguna yang login,
+        // ubah menjadi: $patens = Paten::where('user_id', $authenticatedUser->user_id)->with('kekayaanIntelektual')->orderBy('created_at', 'desc')->paginate(10);
+        $patens = Paten::with('kekayaanIntelektual')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10); // Mengambil 10 item per halaman
 
-    return view('dashboard.paten.index', compact('patens'));
-}
+        return view('dashboard.paten.index', compact('patens'));
+    }
 
     /**
      * Menampilkan formulir untuk membuat entri Paten baru.
@@ -122,7 +122,7 @@ class DashboardPatenController extends Controller
 
         if ($existingPaten) {
             return back()
-                ->withErrors(['judul_paten' => 'Paten dengan judul "'.$validatedData['judul_paten'].'" dan ketua inventor "'.$validatedData['ketua_inventor_nama'].'" sudah terdaftar.'])
+                ->withErrors(['judul_paten' => 'Paten dengan judul "' . $validatedData['judul_paten'] . '" dan ketua inventor "' . $validatedData['ketua_inventor_nama'] . '" sudah terdaftar.'])
                 ->withInput();
         }
 
@@ -158,8 +158,10 @@ class DashboardPatenController extends Controller
         } catch (\Exception $e) {
             Log::error('Failed to create KekayaanIntelektual entry for Paten: ' . $e->getMessage());
             // Hapus file yang sudah terunggah jika pembuatan KI gagal
-            if ($filePathKtp) Storage::disk('public')->delete($filePathKtp);
-            if ($filePathDraft) Storage::disk('public')->delete($filePathDraft);
+            if ($filePathKtp)
+                Storage::disk('public')->delete($filePathKtp);
+            if ($filePathDraft)
+                Storage::disk('public')->delete($filePathDraft);
             return back()->with('error', 'Gagal membuat entri Kekayaan Intelektual untuk Paten. Silakan coba lagi.');
         }
         // --- Selesai pembuatan KekayaanIntelektual ---
@@ -181,8 +183,8 @@ class DashboardPatenController extends Controller
             'file_path_ktp' => $filePathKtp, // Bisa null
             'ada_anggota_mahasiswa' => $validatedData['ada_anggota_mahasiswa'],
             'anggota_mahasiswa' => ($validatedData['ada_anggota_mahasiswa'] === 'Ya' && isset($validatedData['anggota_mahasiswa']))
-                                   ? json_encode($validatedData['anggota_mahasiswa'])
-                                   : null,
+                ? json_encode($validatedData['anggota_mahasiswa'])
+                : null,
             'tanggal_upload_draft' => $validatedData['tanggal_upload_draft'],
             'file_path_draft' => $filePathDraft, // Bisa null
         ];
@@ -194,8 +196,10 @@ class DashboardPatenController extends Controller
         } catch (\Exception $e) {
             Log::error('Failed to store Paten data: ' . $e->getMessage(), $patenData);
             // Hapus file dan entri KI jika penyimpanan Paten gagal
-            if ($filePathKtp) Storage::disk('public')->delete($filePathKtp);
-            if ($filePathDraft) Storage::disk('public')->delete($filePathDraft);
+            if ($filePathKtp)
+                Storage::disk('public')->delete($filePathKtp);
+            if ($filePathDraft)
+                Storage::disk('public')->delete($filePathDraft);
             $kekayaanIntelektual->delete(); // Hapus KI yang sudah dibuat
             return back()->with('error', 'Gagal menyimpan data Paten. Silakan coba lagi.');
         }
@@ -258,9 +262,14 @@ class DashboardPatenController extends Controller
             return redirect()->route('dashboard.paten.index')->with('error', 'Paten tidak ditemukan.');
         }
 
-         $statusOptions = [
-            'Dalam Proses', 'Dibatalkan', 'Ditolak', 'Dihapus',
-            'Ditarik kembali', 'Berakhir', 'Diberi'
+        $statusOptions = [
+            'Dalam Proses',
+            'Dibatalkan',
+            'Ditolak',
+            'Dihapus',
+            'Ditarik kembali',
+            'Berakhir',
+            'Diberi'
         ];
 
         return view('dashboard.paten.edit_status', compact('paten', 'statusOptions'));
@@ -290,7 +299,7 @@ class DashboardPatenController extends Controller
         }
 
         $validatedData = $request->validate([
-            'status' => 'required|string|in:Dalam Proses,Dibatalkan,Ditolak,Dihapus,Didaftar,Ditarik kembali,Berakhir',
+            'status' => 'required|string|in:Dalam Proses,Dibatalkan,Ditolak,Dihapus,Didaftar,Ditarik kembali,Berakhir,Diberi',
         ]);
 
         $paten = Paten::with('kekayaanIntelektual')->find($id);

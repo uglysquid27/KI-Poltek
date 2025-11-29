@@ -237,7 +237,7 @@ class DashboardHakCiptaController extends Controller
         }
 
         $validatedData = $request->validate([
-            'status' => 'required|string|in:Dalam Proses,Dibatalkan,Ditolak,Dihapus,Didaftar,Ditarik kembali,Berakhir',
+            'status' => 'required|string|in:Dalam Proses,Dibatalkan,Ditolak,Dihapus,Didaftar,Ditarik kembali,Berakhir,Diterima',
         ]);
 
         $hakCipta = HakCipta::with('kekayaanIntelektual')->find($id);
