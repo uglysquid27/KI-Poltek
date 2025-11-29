@@ -217,7 +217,7 @@ class DashboardHakCiptaController extends Controller
 
         $statusOptions = [
             'Dalam Proses', 'Dibatalkan', 'Ditolak', 'Dihapus',
-            'Didaftar', 'Ditarik kembali', 'Berakhir'
+            'Ditarik kembali', 'Berakhir', 'Diterima'
         ];
 
         return view('dashboard.hak_cipta.edit_status', compact('hakCipta', 'statusOptions'));

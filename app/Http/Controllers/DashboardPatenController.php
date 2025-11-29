@@ -9,6 +9,7 @@ use App\Models\KekayaanIntelektual;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class DashboardPatenController extends Controller
 {
@@ -80,7 +81,8 @@ class DashboardPatenController extends Controller
 
         Log::info('Paten Store Request Data:', $request->all());
 
-        $validatedData = $request->validate([
+        // Use Validator instead of validate to get more control
+        $validator = Validator::make($request->all(), [
             'judul_paten' => 'required|string|max:255',
             'abstrak' => 'required|string',
             'jumlah_klaim' => 'required|integer|min:1',
@@ -104,6 +106,25 @@ class DashboardPatenController extends Controller
             'file_path_draft' => 'nullable|file|mimes:pdf,docx|max:10240', // Diubah jadi nullable
             'pernyataan_setuju' => 'accepted', // Pastikan ini true jika dicentang
         ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $validatedData = $validator->validated();
+
+        // Check for duplicate - same title and main inventor
+        $existingPaten = Paten::where('judul_paten', $validatedData['judul_paten'])
+            ->where('ketua_inventor_nama', $validatedData['ketua_inventor_nama'])
+            ->first();
+
+        if ($existingPaten) {
+            return back()
+                ->withErrors(['judul_paten' => 'Paten dengan judul "'.$validatedData['judul_paten'].'" dan ketua inventor "'.$validatedData['ketua_inventor_nama'].'" sudah terdaftar.'])
+                ->withInput();
+        }
 
         $filePathKtp = null;
         $filePathDraft = null;
@@ -237,9 +258,9 @@ class DashboardPatenController extends Controller
             return redirect()->route('dashboard.paten.index')->with('error', 'Paten tidak ditemukan.');
         }
 
-        $statusOptions = [
+         $statusOptions = [
             'Dalam Proses', 'Dibatalkan', 'Ditolak', 'Dihapus',
-            'Didaftar', 'Ditarik kembali', 'Berakhir'
+            'Ditarik kembali', 'Berakhir', 'Diberi'
         ];
 
         return view('dashboard.paten.edit_status', compact('paten', 'statusOptions'));

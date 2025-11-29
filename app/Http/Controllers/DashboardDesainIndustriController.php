@@ -277,7 +277,7 @@ class DashboardDesainIndustriController extends Controller
 
         $statusOptions = [
             'Dalam Proses', 'Dibatalkan', 'Ditolak', 'Dihapus',
-            'Didaftar', 'Ditarik kembali', 'Berakhir'
+            'Ditarik kembali', 'Berakhir', 'Diberi'
         ];
 
         return view('dashboard.desain_industri.edit_status', compact('desain', 'statusOptions'));
