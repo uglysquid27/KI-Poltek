@@ -124,6 +124,17 @@ class DashboardDesainIndustriController extends Controller
 
         $validatedData = $validator->validated();
 
+        // Check for duplicate - same title and designer
+        $existingDesain = DesainIndustri::where('judul_desain', $validatedData['judul_desain'])
+            ->where('pendesain_nama', $validatedData['pendesain_nama'])
+            ->first();
+
+        if ($existingDesain) {
+            return back()
+                ->withErrors(['judul_desain' => 'Desain Industri dengan judul "'.$validatedData['judul_desain'].'" dan pendesain "'.$validatedData['pendesain_nama'].'" sudah terdaftar.'])
+                ->withInput();
+        }
+
         // Handle file uploads
         $filePaths = [];
         try {

@@ -40,8 +40,11 @@
                         <div>
                             <label for="judul_desain" class="block mb-2 font-medium text-gray-600 text-sm">Judul Desain:</label>
                             <input type="text" name="judul_desain" id="judul_desain" value="{{ old('judul_desain') }}" required
-                                   class="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-2 w-full text-gray-700"
+                                   class="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-2 w-full text-gray-700 @error('judul_desain') border-red-500 @enderror"
                                    placeholder="Contoh: Botol, Kursi, Lampu">
+                            @error('judul_desain')
+                                <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div>
@@ -168,7 +171,10 @@
                             <div>
                                 <label for="pendesain_nama" class="block mb-2 font-medium text-gray-600 text-sm">Nama Pendesain:</label>
                                 <input type="text" name="pendesain_nama" id="pendesain_nama" value="{{ old('pendesain_nama') }}" required
-                                       class="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-2 w-full text-gray-700">
+                                       class="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-2 w-full text-gray-700 @error('pendesain_nama') border-red-500 @enderror">
+                                @error('pendesain_nama')
+                                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div>
                                 <label for="pendesain_kewarganegaraan" class="block mb-2 font-medium text-gray-600 text-sm">Kewarganegaraan:</label>
@@ -287,138 +293,9 @@
                                 @endforeach
                             @endif
                         </div>
-           <button type="button" id="add_anggota_pendesain_btn" class="bg-blue-500 hover:bg-blue-600 shadow-md px-6 py-3 rounded-full font-semibold text-md text-white transition duration-200 cursor-pointer">
-    Tambah Anggota Pendesain
-</button>
-
-<script>
-// Complete functionality in one script
-function addAnggotaPendesainField() {
-    console.log('addAnggotaPendesainField function executing');
-    
-    const anggotaPendesainContainer = document.getElementById('anggota_pendesain_container');
-    if (!anggotaPendesainContainer) {
-        console.error('anggota_pendesain_container not found');
-        return;
-    }
-    
-    const div = document.createElement('div');
-    div.classList.add('anggota-pendesain-item', 'space-y-4', 'border', 'border-gray-300', 'p-4', 'rounded-lg', 'relative');
-    const currentIndex = anggotaPendesainContainer.children.length;
-    
-    div.innerHTML = `
-        <h4 class="text-md font-semibold text-gray-700">Anggota Pendesain #${currentIndex + 1}</h4>
-        <button type="button" class="remove-anggota-pendesain-btn absolute top-2 right-2 text-red-500 hover:text-red-700 transition duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-        <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
-            <div>
-                <label class="block text-gray-600 text-sm font-medium mb-1">Nama:</label>
-                <input type="text" name="anggota_pendesain[${currentIndex}][nama]" required
-                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
-            </div>
-            <div>
-                <label class="block text-gray-600 text-sm font-medium mb-1">Kewarganegaraan:</label>
-                <input type="text" name="anggota_pendesain[${currentIndex}][kewarganegaraan]" value="Indonesia" required
-                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
-            </div>
-        </div>
-        <div>
-            <label class="block text-gray-600 text-sm font-medium mb-1">Alamat:</label>
-            <textarea name="anggota_pendesain[${currentIndex}][alamat]" rows="2" required
-                      class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700"></textarea>
-        </div>
-        <div class="gap-4 grid grid-cols-1 md:grid-cols-2">
-            <div>
-                <label class="block text-gray-600 text-sm font-medium mb-1">RT/RW:</label>
-                <input type="text" name="anggota_pendesain[${currentIndex}][rt_rw]" required
-                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
-            </div>
-            <div>
-                <label class="block text-gray-600 text-sm font-medium mb-1">Kelurahan:</label>
-                <input type="text" name="anggota_pendesain[${currentIndex}][kelurahan]" required
-                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
-            </div>
-        </div>
-        <div class="gap-4 grid grid-cols-1 md:grid-cols-3">
-            <div>
-                <label class="block text-gray-600 text-sm font-medium mb-1">Kecamatan:</label>
-                <input type="text" name="anggota_pendesain[${currentIndex}][kecamatan]" required
-                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
-            </div>
-            <div>
-                <label class="block text-gray-600 text-sm font-medium mb-1">Kota/Kabupaten:</label>
-                <input type="text" name="anggota_pendesain[${currentIndex}][kota_kabupaten]" required
-                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
-            </div>
-            <div>
-                <label class="block text-gray-600 text-sm font-medium mb-1">Kode POS:</label>
-                <input type="text" name="anggota_pendesain[${currentIndex}][kodepos]" required
-                       class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
-            </div>
-        </div>
-        <div>
-            <label class="block text-gray-600 text-sm font-medium mb-1">Provinsi:</label>
-            <input type="text" name="anggota_pendesain[${currentIndex}][provinsi]" required
-                   class="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-1 focus:ring-[#68C5CC] text-gray-700">
-        </div>
-    `;
-    
-    anggotaPendesainContainer.appendChild(div);
-    console.log('New anggota pendesain field added successfully');
-
-    // Add remove functionality to the new button
-    const removeBtn = div.querySelector('.remove-anggota-pendesain-btn');
-    removeBtn.addEventListener('click', function() {
-        console.log('Remove button clicked');
-        div.remove();
-        reindexPendesainFields();
-    });
-}
-
-function reindexPendesainFields() {
-    const container = document.getElementById('anggota_pendesain_container');
-    const items = container.querySelectorAll('.anggota-pendesain-item');
-    
-    items.forEach((item, index) => {
-        const title = item.querySelector('h4');
-        if (title) {
-            title.textContent = `Anggota Pendesain #${index + 1}`;
-        }
-
-        // Update input names
-        item.querySelectorAll('input, textarea').forEach(input => {
-            const oldName = input.name;
-            if (oldName && oldName.includes('anggota_pendesain')) {
-                const newName = oldName.replace(/\[\d+\]/, `[${index}]`);
-                input.name = newName;
-            }
-        });
-    });
-}
-
-// Add event listener to the button
-document.getElementById('add_anggota_pendesain_btn').addEventListener('click', function() {
-    // console.log('Tambah Anggota Pendesain button clicked!');
-    addAnggotaPendesainField();
-});
-
-// Add remove listeners to existing items when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // console.log('DOM loaded - adding remove listeners to existing items');
-    
-    document.querySelectorAll('.remove-anggota-pendesain-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            this.closest('.anggota-pendesain-item').remove();
-            reindexPendesainFields();
-        });
-    });
-});
-
-// console.log('Script loaded - button should work now');
-</script>
+                        <button type="button" id="add_anggota_pendesain_btn" class="bg-blue-500 hover:bg-blue-600 shadow-md px-6 py-3 rounded-full font-semibold text-md text-white transition duration-200 cursor-pointer">
+                            Tambah Anggota Pendesain
+                        </button>
 
                         {{-- Files --}}
                         <h3 class="mt-6 mb-2 font-semibold text-gray-700 text-lg">Dokumen Pendukung</h3>
@@ -633,8 +510,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
 
+            // Add event listener to the "Tambah Anggota Pendesain" button
+            document.getElementById('add_anggota_pendesain_btn').addEventListener('click', function() {
+                addAnggotaPendesainField();
+            });
+
             console.log('All JavaScript functionality initialized');
         });
     </script>
-@endpush
+    @endpush
 @endsection
