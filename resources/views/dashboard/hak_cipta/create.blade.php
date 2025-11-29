@@ -1,5 +1,3 @@
-[file name]: create.blade.php
-[file content begin]
 @extends('layouts.dashboard')
 
 @section('title', 'Unggah Hak Cipta Sentra')
@@ -42,7 +40,10 @@
                         <div>
                             <label for="judul_karya" class="block mb-2 font-medium text-gray-600 text-sm">Judul Karya:</label>
                             <input type="text" name="judul_karya" id="judul_karya" value="{{ old('judul_karya') }}" required
-                                   class="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-2 w-full text-gray-700">
+                                   class="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-2 w-full text-gray-700 @error('judul_karya') border-red-500 @enderror">
+                            @error('judul_karya')
+                                <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                            @enderror
                         </div>
 
                         <div>
@@ -75,7 +76,10 @@
                             <div>
                                 <label for="pencipta_nama" class="block mb-2 font-medium text-gray-600 text-sm">Nama Lengkap:</label>
                                 <input type="text" name="pencipta_nama" id="pencipta_nama" value="{{ old('pencipta_nama') }}" required
-                                       class="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-2 w-full text-gray-700">
+                                       class="px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-[#68C5CC] focus:ring-2 w-full text-gray-700 @error('pencipta_nama') border-red-500 @enderror">
+                                @error('pencipta_nama')
+                                    <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div>
                                 <label for="pencipta_email" class="block mb-2 font-medium text-gray-600 text-sm">E-mail:</label>
@@ -518,4 +522,3 @@
         // console.log('Script loaded - buttons should work now');
     </script>
 @endsection
-[file content end]

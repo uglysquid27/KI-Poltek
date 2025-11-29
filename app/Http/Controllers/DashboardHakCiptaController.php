@@ -9,6 +9,7 @@ use App\Models\HakCipta;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class DashboardHakCiptaController extends Controller
 {
@@ -56,7 +57,8 @@ class DashboardHakCiptaController extends Controller
             return redirect()->route('login')->with('error', 'Anda harus login untuk mengunggah data.');
         }
 
-        $validatedData = $request->validate([
+        // Use Validator instead of validate to get more control
+        $validator = Validator::make($request->all(), [
             'judul_karya' => 'required|string|max:255',
             'uraian_singkat_ciptaan' => 'required|string',
             'jenis_karya' => 'required|string|in:Karya Tulis,Karya Seni,Komposisi Musik,Karya Audio Visual,Karya Fotografi,Karya Drama & Koreografi,Karya Rekaman,Karya Lainnya',
@@ -86,6 +88,25 @@ class DashboardHakCiptaController extends Controller
             'dokumen_ciptaan' => 'required|file|mimes:pdf,docx|max:10240',
             'pernyataan_setuju' => 'accepted',
         ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $validatedData = $validator->validated();
+
+        // Check for duplicate - same title and creator
+        $existingHakCipta = HakCipta::where('judul_karya', $validatedData['judul_karya'])
+            ->where('pencipta_nama', $validatedData['pencipta_nama'])
+            ->first();
+
+        if ($existingHakCipta) {
+            return back()
+                ->withErrors(['judul_karya' => 'Hak Cipta dengan judul "'.$validatedData['judul_karya'].'" dan pencipta "'.$validatedData['pencipta_nama'].'" sudah terdaftar.'])
+                ->withInput();
+        }
 
         // Convert checkbox to boolean
         $validatedData['pernyataan_setuju'] = $request->has('pernyataan_setuju') ? 1 : 0;
