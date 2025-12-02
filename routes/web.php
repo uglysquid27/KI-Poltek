@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PatenController;
+use App\Http\Controllers\DesainIndustriController;
 use App\Http\Controllers\HakCiptaController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
