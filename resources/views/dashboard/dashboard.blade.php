@@ -50,20 +50,6 @@
                     </div>
                 </div>
 
-                <div class="mt-8 bg-white p-6 rounded-lg shadow-md mb-8">
-                    <h2 class="text-xl font-bold text-gray-700 mb-4">Aktivitas Terbaru</h2>
-                    <ul class="divide-y divide-gray-200">
-                        @forelse($recentActivities ?? [] as $activity)
-                            <li class="py-3 flex justify-between items-center">
-                                <span class="text-gray-700">{{ $activity['description'] }}</span>
-                                <span class="text-gray-500 text-sm">{{ $activity['time'] }}</span>
-                            </li>
-                        @empty
-                            <li class="py-3 text-gray-500">Tidak ada aktivitas terbaru.</li>
-                        @endforelse
-                    </ul>
-                </div>
-
                 {{-- Hak Cipta Data Table --}}
                 <div class="mt-8 bg-white p-6 rounded-lg shadow-md mb-8">
                     <h2 class="text-xl font-bold text-gray-700 mb-4">Daftar Hak Cipta</h2>

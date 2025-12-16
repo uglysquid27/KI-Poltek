@@ -52,24 +52,15 @@ class DashboardController extends Controller
     $pendingApprovals = KekayaanIntelektual::where('status', 'Dalam Proses')->count();
     $approvedApplications = KekayaanIntelektual::where('status', 'Didaftar')->count();
 
-    // Dummy data for recent activities
-    $recentActivities = [
-        ['description' => 'Aplikasi "Software Baru" diajukan.', 'time' => '2 jam yang lalu'],
-        ['description' => 'Paten "Perangkat Cerdas" disetujui.', 'time' => 'Kemarin'],
-        ['description' => 'Hak Cipta "Koleksi Seni Digital" ditinjau.', 'time' => '3 hari yang lalu'],
-        ['description' => 'Desain Industri "Model Produk Baru" diajukan.', 'time' => '5 hari yang lalu'], // Add sample activity
-    ];
-
     // Pass all data to the dashboard view
     return view('dashboard.dashboard', compact(
         'totalApplications',
         'pendingApprovals',
         'approvedApplications',
-        'recentActivities',
         'authenticatedUser',
         'hakCiptas',
         'patens',
-        'desainIndustris' // Add this variable
+        'desainIndustris' 
     ));
 }
 }

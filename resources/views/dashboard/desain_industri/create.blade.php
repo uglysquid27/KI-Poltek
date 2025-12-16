@@ -359,9 +359,8 @@
         </div>
     </div>
 
-    @push('scripts')
     <script>
-        // Make the function globally accessible
+        // Function to add anggota pendesain field
         function addAnggotaPendesainField() {
             console.log('addAnggotaPendesainField function executing');
             
@@ -518,5 +517,4 @@
             console.log('All JavaScript functionality initialized');
         });
     </script>
-    @endpush
 @endsection
